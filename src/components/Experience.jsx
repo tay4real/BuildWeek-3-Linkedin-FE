@@ -15,7 +15,6 @@ class Experience extends React.Component {
     showModal: false,
     experience: [],
     selectedId: null,
-    // method: null,
     exp: {},
   };
   // re-order
@@ -61,40 +60,34 @@ class Experience extends React.Component {
     result.splice(endIndex, 0, removed);
     return result;
   };
-  searchExp = async () => {
+  
+  componentDidMount = async() => {
     await fetch(
-      `${process.env.REACT_APP_BE_URL}experience/${this.props.profile._id}`,
-      {
-        method: "GET",
-        headers: new Headers({
-          Authorization: "Bearer " + localStorage.getItem("token"),
-          ContentType: "application/json",
-        }),
-      }
+      `${process.env.REACT_APP_BE_URL}experience/${this.props.profile._id}`
     )
       .then((response) => response.json())
       .then((experience) => {
-        this.setState({ experience: experience });
+        if (experience) {
+          this.setState({ experience: experience });
+        } else console.log("Not found")
+        
       });
   };
-  componentDidMount = () => {
-    this.searchExp();
-  };
-  componentDidUpdate = (prevProps) => {
-    if (prevProps.profile._id !== this.props.profile._id) {
-      this.searchExp();
-    }
-  };
+  // componentDidUpdate = () => {
+    
+  // };
   toggleModal = (job) => {
-    job !== undefined
-      ? this.setState({
-          selectedId: job._id,
-          showModal: !this.state.showModal,
-        })
-      : this.setState({
-          selectedId: null,
-          showModal: !this.state.showModal,
-        });
+    if (job === undefined) {
+      this.setState({
+        selectedId: null,
+        showModal: this.state.showModal === false ? true : false,
+      }, ()=> console.log(this.state));
+    } else {
+      this.setState({
+        selectedId: job._id,
+        showModal: !this.state.showModal,
+      })
+    }
   };
 
   render() {
@@ -107,8 +100,8 @@ class Experience extends React.Component {
                 Experience
               </div>
 
-              <Route path="/user/me">
-                <Button variant="white" onClick={() => this.toggleModal()}>
+              <Route path={"/user/"+this.props.logged}>
+                <Button variant="white" onClick={()=>this.toggleModal()}>
                   <IconContext.Provider
                     value={{
                       size: "24px",
@@ -153,7 +146,7 @@ class Experience extends React.Component {
                                   key={`exp${index}`}
                                   className="exp"
                                 >
-                                  <Route path="/user/me">
+                                  <Route path={"/user/"+this.props.logged}>
                                     <Button
                                       variant="white"
                                       className="editBtnExp"
@@ -215,7 +208,7 @@ class Experience extends React.Component {
             </DragDropContext>
           </Card.Body>
         </Card>
-        <Route path="/user/me">
+        <Route path={"/user/"+this.props.logged}>
           {" "}
           <Edit
             show={this.state.showModal}

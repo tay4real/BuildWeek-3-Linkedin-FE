@@ -13,6 +13,9 @@ class Login extends Component {
       let profiles = await response.json()
       this.setState({profiles: profiles}, ()=> console.log(profiles))
   }
+  sendData = async() => {
+    await this.props.account(this.state.loggedWith._id);
+}
   submitData = async (e) => {
     e.preventDefault();
     console.log(this.state.user)
@@ -21,15 +24,17 @@ class Login extends Component {
         if(this.state.user.username === user.email) {
           console.log("It's a match! ", user)
           this.setState({loggedWith: user}, ()=> console.table(this.state.loggedWith))
+          
         } else {
           console.log("No matches found")
         }
       })
+      this.sendData()
+    this.props.history.push(`/user/${this.state.loggedWith._id}`)
     } catch (error) {
       console.log(error);
     }
-    console.log(this.state.loggedWith)
-    this.props.history.push(`/user/${this.state.loggedWith._id}`)
+    
   };
   onChangeHandler = (e) => {
     this.setState({

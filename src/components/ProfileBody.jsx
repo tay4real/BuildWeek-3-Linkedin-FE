@@ -13,7 +13,7 @@ import Feature from "./Featured";
 import Sidebar from "./Sidebar";
 import EditPage from "./EditPage";
 import "../styles/Profile.css";
-import { Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 class Body extends React.Component {
   state = {
     profile: {},
@@ -22,19 +22,26 @@ class Body extends React.Component {
     errType: null,
     errMsg: "",
     loading: true,
+    logged: ""
   };
-  
+
   componentDidMount = async () => {
-    let response = await fetch(process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id)
-    let profile = await response.json()
-    this.setState({profile: profile, loading: false})
+    this.setState({logged: this.props.logged}, ()=> console.log(this.state.logged))
+    let response = await fetch(
+      process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
+    );
+    let profile = await response.json();
+    this.setState({ profile: profile, loading: false });
   };
-  componentDidUpdate = async() => {
-    await fetch(process.env.REACT_APP_BE_URL + this.props.match.params.id)
-    let response = await fetch(process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id)
-    let profile = await response.json()
-    this.setState({profile: profile, loading: false})
+  componentDidUpdate = async () => {
+    
+    let response = await fetch(
+      process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
+    );
+    let profile = await response.json();
+    this.setState({ profile: profile, loading: false });
   };
+
   render() {
     return (
       <div className="bgBody">
@@ -43,10 +50,12 @@ class Body extends React.Component {
             <Alert variant="danger">{this.state.errMsg}</Alert>
           )}
           {this.state.loading && this.state.err !== true ? (
-            <div
-              style={{ position: "relative", top: "8vh", left: "25vw" }}
-              class="lds-facebook"
-            >
+            <div class="lds-roller">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
               <div></div>
               <div></div>
               <div></div>
@@ -114,7 +123,7 @@ class Body extends React.Component {
                         </Col>
                         <Col lg={6}>
                           <div className="btnBox">
-                            <Route path="/user/me">
+                            <Route path={"/user/"+this.state.logged}>
                               {" "}
                               <DropdownButton
                                 className="d-none d-lg-block"
@@ -155,11 +164,11 @@ class Body extends React.Component {
                   profile={this.state.profile}
                   refetch={() => this.searchProfile(this.props.match.params.id)}
                 />
-                <Route path="/user/me">
+                <Route path={"/user/"+this.state.logged}>
                   {" "}
                   <Feature />{" "}
                 </Route>
-                <Experience profile={this.state.profile} />
+                <Experience profile={this.state.profile} logged={this.state.logged} />
               </Col>
               <Col
                 md={4}
@@ -181,4 +190,4 @@ class Body extends React.Component {
     );
   }
 }
-export default Body;
+export default withRouter(Body);

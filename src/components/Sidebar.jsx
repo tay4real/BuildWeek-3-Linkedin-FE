@@ -37,7 +37,7 @@ class Sidebar extends Component {
               <div className="userdiv2" key={`suggestUsers${index}`}>
                 <Link to={`/user/${user._id}`}>
                   <Row>
-                    <img className="userimg" src={user.image ? user.image :Placeholder} alt="user"></img>
+                    <img className="userimg" src={user.image ? user.image : Placeholder} alt="user"></img>
                     <div>
                       <h6 className="sugUsers" id={`suggestUsers${index}name`}>
                         {user.name}
