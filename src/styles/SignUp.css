@@ -7,7 +7,7 @@ div:not(.modal-content) {
   height: 100vh;
 }
 .signupBox {
-  width: 400px;
+  width: 800px;
   border-radius: 8px;
 }
 .signupCol {
@@ -19,9 +19,12 @@ div:not(.modal-content) {
   align-self: center;
   padding: 2rem;
 }
-/* .signupCol h4 {
-  font-weight: 600;
-} */
+.center-form { 
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 .signupCol span {
   font-size: 12px;
   text-align: center;

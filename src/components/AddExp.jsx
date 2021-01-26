@@ -19,7 +19,7 @@ class Add extends React.Component {
   submitExperience = async (e) => {
     try {
       const response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/profile/me/experiences",
+        process.env.REACT_APP_BE_URL, //!
         {
           method: "POST",
           body: JSON.stringify(this.state.experience),

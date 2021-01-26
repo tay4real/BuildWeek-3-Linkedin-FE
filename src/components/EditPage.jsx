@@ -16,12 +16,7 @@ class EditPage extends React.Component {
   fetchMe = async () => {
     try {
       const pFetch = await fetch(
-        "https://striveschool-api.herokuapp.com/api/profile/me",
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
+        process.env.REACT_APP_BE_URL + "profile" + this.props.match.params.id,
       );
       const pResponse = await pFetch.json();
       this.setState({ profile: pResponse });
@@ -42,7 +37,7 @@ class EditPage extends React.Component {
   };
 
   editPage = async () => {
-    const url = "https://striveschool-api.herokuapp.com/api/profile/";
+    const url = process.env.REACT_APP_BE_URL;
     try {
       const response = await fetch(url, {
         method: "PUT",
@@ -81,7 +76,7 @@ class EditPage extends React.Component {
     fd.append("profile", this.state.selectedFile);
     try {
       const response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${this.state.profile._id}/picture`,
+        process.env.REACT_APP_BE_URL,
         {
           method: "POST",
           headers: { Authorization: "Bearer " + localStorage.getItem("token") },

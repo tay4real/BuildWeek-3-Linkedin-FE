@@ -8,25 +8,28 @@ class Login extends Component {
     user: [],
     hidden: true,
   };
-  url = "https://striveschool-api.herokuapp.com/api/account/register";
+  componentDidMount = async() => {
+    let response = await fetch(process.env.REACT_APP_BE_URL + "profile");
+      let profiles = await response.json()
+      this.setState({profiles: profiles}, ()=> console.log(profiles))
+  }
   submitData = async (e) => {
     e.preventDefault();
+    console.log(this.state.user)
     try {
-      let response = await fetch(this.url, {
-        method: "POST",
-        body: JSON.stringify(this.state.user),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        const { access_token } = await response.json();
-        localStorage.setItem("token", access_token);
-        this.props.history.push("/home");
-      }
+      await this.state.profiles.map((user)=> {
+        if(this.state.user.username === user.email) {
+          console.log("It's a match! ", user)
+          this.setState({loggedWith: user}, ()=> console.table(this.state.loggedWith))
+        } else {
+          console.log("No matches found")
+        }
+      })
     } catch (error) {
       console.log(error);
     }
+    console.log(this.state.loggedWith)
+    this.props.history.push(`/user/${this.state.loggedWith._id}`)
   };
   onChangeHandler = (e) => {
     this.setState({
@@ -74,7 +77,7 @@ class Login extends Component {
                   <span>Stay updated on your professional world</span>
                 )}
               </div>
-              <Form onSubmit={this.submitData}>
+              <Form onSubmit={(e)=> this.submitData(e)}>
                 <Form.Group>
                   <Form.Control
                     required

@@ -97,7 +97,7 @@ class AppNavBar extends React.Component {
                 <span className="navIconText">Notifications</span>
               </Col>
             </Nav.Link>
-            <Nav.Link className="navLinkCol" as={Link} to="/user/me">
+            <Nav.Link className="navLinkCol" as={Link} to="/">
               <Col className="navCol">
                 <FaUserCircle className="navIcon" />
                 <span className="navIconText">Me</span>

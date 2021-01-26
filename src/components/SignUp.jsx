@@ -12,25 +12,33 @@ export default class SignUp extends Component {
   header = {
     ContentType: "application/json",
   };
-  submitData = async () => {
-    try {
-      let payload = this.state.user;
-      // payload.password = btoa(payload.password);
-      // payload.username = btoa(payload.username);
-      let response = await fetch(this.url, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        header: this.header,
-      });
-      if (response.ok) {
-        console.log(response);
-        console.log("response", await response.json());
-        this.props.history.details.push("/login");
+  addUser = async () => {
+    console.log(this.state.user)
+    try {let newUser = await fetch(process.env.REACT_APP_BE_URL + "profile", {
+      method: "POST", 
+      body: JSON.stringify(this.state.user),
+      headers: {
+        "Content-type": "application/json"
       }
-    } catch (error) {
-      console.log(error);
+    })
+    console.log(newUser)
+    if (newUser.statusText === "Internal Server Error") {
+      console.log("There is a problem with your application.")
+    } else if (newUser.statusText === "Created") {
+      let user = await newUser.json()
+      this.props.history.push(`/user/${user._id}`)
     }
+    } catch(error) {
+      console.log(error)
+    }
+    
+    
   };
+  onChangeUserName = (e) => {
+    this.setState({
+      user: { ...this.state.user, [e.target.id]: e.currentTarget.value.toLowerCase() },
+    });
+  }
   onChangeHandler = (e) => {
     this.setState({
       user: { ...this.state.user, [e.target.id]: e.currentTarget.value },
@@ -38,7 +46,7 @@ export default class SignUp extends Component {
   };
   handleLogin = (e) => {
     if (e.keyCode === 13) {
-      this.submitData(this.state.user);
+      this.addUser(this.state.user);
     } else {
       this.setState({
         user: { ...this.state.user, [e.target.id]: e.currentTarget.value },
@@ -65,32 +73,85 @@ export default class SignUp extends Component {
           <Col className="signupCol mt-5 signupBox">
             <div className="bg-white d-flex flex-column ">
               <Form>
-                <Form.Group>
+                <Form.Row className='center-form'>
+                <Form.Group className="mr-5">
+                  <Form.Label>Name </Form.Label>
+                  <Form.Control 
+                    required
+                    id="name"
+                    value={this.state.user.name}
+                    placeholder="Name"
+                    onKeyDown={(e) => this.handleLogin(e)}
+                    onChange={(e) => this.onChangeHandler(e)}
+                  />
+                </Form.Group>
+                <Form.Group className="">
+                  <Form.Label>Surname</Form.Label>
+                  <Form.Control 
+                    required
+                    id="surname"
+                    value={this.state.user.surname}
+                    placeholder="Surname"
+                    onKeyDown={(e) => this.handleLogin(e)}
+                    onChange={(e) => this.onChangeHandler(e)}
+                  />
+                </Form.Group>
+                </Form.Row>
+                <Form.Row className='center-form'>
+                <Form.Group className="mr-5" >
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    required
+                    id="email"
+                    value={this.state.user.email}
+                    type="text"
+                    placeholder="Email"
+                    onKeyDown={(e) => this.handleLogin(e)}
+                    onChange={(e) => this.onChangeHandler(e)}
+                  />
+                </Form.Group>
+                <Form.Group  >
                   <Form.Label>Username</Form.Label>
                   <Form.Control
                     required
                     id="username"
                     value={this.state.user.username}
                     type="text"
-                    size="sm"
-                    placeholder="Email or Phone"
+                    placeholder="username"
                     onKeyDown={(e) => this.handleLogin(e)}
-                    onChange={(e) => this.onChangeHandler(e)}
+                    onChange={(e) => this.onChangeUserName(e)}
                   />
                 </Form.Group>
-                <Form.Group className="inputPwd">
-                  <Form.Label>Password (6 or more characters)</Form.Label>
-                  <Form.Control
+                </Form.Row> 
+                <Form.Row className='center-form'>
+                <Form.Group className="w-75">
+                  <Form.Label>Bio</Form.Label>
+                  <Form.Control 
                     required
-                    id="password"
-                    value={this.state.user.password}
-                    type={this.state.hidden ? "password" : "text"}
-                    size="sm"
-                    placeholder="Password"
+                    id="bio"
+                    as='textarea'
+                    rows={6}
+                    value={this.state.user.bio}
+                    placeholder="Write something about you..."
                     onKeyDown={(e) => this.handleLogin(e)}
                     onChange={(e) => this.onChangeHandler(e)}
                   />
                 </Form.Group>
+                </Form.Row>
+                <Form.Row className='center-form'>
+                <Form.Group className="w-75">
+                  <Form.Label>Current title</Form.Label>
+                  <Form.Control 
+                    required
+                    id="title"
+                    rows={6}
+                    value={this.state.user.title}
+                    placeholder="What are you currently doing?"
+                    onKeyDown={(e) => this.handleLogin(e)}
+                    onChange={(e) => this.onChangeHandler(e)}
+                  />
+                </Form.Group>
+                </Form.Row>
               </Form>
               <span>
                 By clicking Agree & Join, you agree to the LinkedIn{" "}
@@ -98,8 +159,8 @@ export default class SignUp extends Component {
                 <a>Cookie Policy</a>.
               </span>
               <Col className="signupCol px-0">
-                {/* <Button className="signupBtn" onClick={() => this.submitData()}> */}
-                <Button className="signupBtn">Agree & Join</Button>
+                {/* <Button className="signupBtn" > */}
+                <Button className="signupBtn" onClick={() => this.addUser()}>Agree & Join</Button>
               </Col>
             </div>
             <Row className="d-flex justify-content-around mt-4 mx-auto ">

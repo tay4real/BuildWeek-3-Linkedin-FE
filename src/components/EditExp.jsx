@@ -10,7 +10,7 @@ class Edit extends React.Component {
     selectedFile: null,
     imgSubmitStatus: "secondary",
   };
-  url = "https://striveschool-api.herokuapp.com/api/profile/";
+  url = process.env.REACT_APP_BE_URL;
   headers = {
     Authorization: "Bearer " + localStorage.getItem("token"),
     "Content-Type": "application/json",

@@ -56,13 +56,10 @@ class Body extends React.Component {
       });
   };
   componentDidMount = async () => {
-    this.props.match.params.id &&
-      this.searchProfile(this.props.match.params.id);
+    await fetch(process.env.REACT_APP_BE_URL + this.props.match.params.id)
   };
-  componentDidUpdate = (prevProps) => {
-    if (prevProps.match.params.id !== this.props.match.params.id) {
-      this.searchProfile(this.props.match.params.id);
-    }
+  componentDidUpdate = async() => {
+    await fetch(process.env.REACT_APP_BE_URL + this.props.match.params.id)
   };
   render() {
     return (
