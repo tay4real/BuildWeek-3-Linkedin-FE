@@ -33,14 +33,14 @@ class Body extends React.Component {
     let profile = await response.json();
     this.setState({ profile: profile, loading: false });
   };
-  componentDidUpdate = async () => {
+  // componentDidUpdate = async () => {
     
-    let response = await fetch(
-      process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
-    );
-    let profile = await response.json();
-    this.setState({ profile: profile, loading: false });
-  };
+  //   let response = await fetch(
+  //     process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
+  //   );
+  //   let profile = await response.json();
+  //   this.setState({ profile: profile, loading: false });
+  // };
 
   render() {
     return (
@@ -147,6 +147,7 @@ class Body extends React.Component {
                               <button className="btnMore">More...</button>
                               <EditPage
                                 profile={this.state.profile}
+                                logged = {this.state.logged}
                                 refetch={() =>
                                   this.searchProfile(this.props.match.params.id)
                                 }

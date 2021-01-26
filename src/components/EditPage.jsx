@@ -1,31 +1,34 @@
 import React from "react";
 import { Image, Row, Col, Form, Button, Modal } from "react-bootstrap";
 import { BiPencil } from "react-icons/bi";
-import { MdClose } from "react-icons/md";
+import { MdClose} from "react-icons/md";
 import { IconContext } from "react-icons";
+import { FaUpload } from "react-icons/fa"
+import {AiOutlinePlus} from "react-icons/ai"
+import CameraLogo from '../assets/missing-propic.jpg'
 import "../styles/EditPage.css";
 
 class EditPage extends React.Component {
   state = {
+    logged: this.props.logged,
     profile: {},
     showModal: false,
     confirmDialog: false,
     selectedFile: null,
     imgSubmitStatus: "secondary",
   };
-  fetchMe = async () => {
+  
+  componentDidMount = async()=> {
+    console.log("Modal mounted with ", this.state.logged)
     try {
       const pFetch = await fetch(
-        process.env.REACT_APP_BE_URL + "profile" + this.props.match.params.id,
+        process.env.REACT_APP_BE_URL + "profile/" + this.state.logged,
       );
       const pResponse = await pFetch.json();
       this.setState({ profile: pResponse });
     } catch (error) {
       console.log(error);
     }
-  };
-  componentDidMount() {
-    this.fetchMe();
   }
   onChangeHandler = (e) => {
     this.setState({
@@ -37,14 +40,13 @@ class EditPage extends React.Component {
   };
 
   editPage = async () => {
-    const url = process.env.REACT_APP_BE_URL;
+    const url = process.env.REACT_APP_BE_URL + "profile/" + this.state.logged
     try {
       const response = await fetch(url, {
         method: "PUT",
         body: JSON.stringify(this.state.profile),
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
       if (response.ok) {
@@ -68,24 +70,26 @@ class EditPage extends React.Component {
     this.setState({
       selectedFile: event.target.files[0],
       imgSubmitStatus: "success",
-    });
+    }, ()=> console.log(this.state.selectedFile));
   };
 
-  fileUploadHandler = async () => {
+  fileUploadHandler = async () => { //base 64 with fileReader
     const fd = new FormData();
-    fd.append("profile", this.state.selectedFile);
+    fd.append("image", this.state.selectedFile); //do not await 
     try {
       const response = await fetch(
-        process.env.REACT_APP_BE_URL,
+        process.env.REACT_APP_BE_URL + "profile/" + this.state.logged +"/propic",
         {
           method: "POST",
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
           body: fd,
+          //redirect: 'follow' //it was all your fault 
         }
       );
       if (response.ok) {
+        console.log(await response.json())
         this.setState({ showModal: false }, () => this.props.refetch());
       } else {
+        console.log(await response.json())
         this.setState({ showModal: false });
       }
     } catch (error) {
@@ -128,10 +132,19 @@ class EditPage extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <Image
-              src={this.state.profile.image}
+              src={this.state.profile.image ? this.state.profile.image : CameraLogo}
               roundedCircle
               className="editImage"
             />
+            <Button
+                variant={this.state.imgSubmitStatus}
+                onClick={() => this.fileInput.click()}
+                className="py-1 upload"
+              >
+                {this.state.imgSubmitStatus === "secondary"
+                  ? <AiOutlinePlus/>
+                  : <FaUpload/>}
+              </Button>
             {/* <input type="file" onChange={this.fileSelectHandler}></input>
             <button onClick={this.fileUploadHandler}>Upload Image</button> */}
             <Form>
@@ -202,15 +215,7 @@ class EditPage extends React.Component {
                 onChange={this.fileSelectHandler}
                 ref={(fileInput) => (this.fileInput = fileInput)}
               />
-              <Button
-                variant={this.state.imgSubmitStatus}
-                onClick={() => this.fileInput.click()}
-                className="rounded-pill py-1"
-              >
-                {this.state.imgSubmitStatus === "secondary"
-                  ? "Choose an image"
-                  : "Ready to Upload"}
-              </Button>
+              
               <Button
                 className="rounded-pill py-1"
                 variant="primary"
@@ -247,7 +252,6 @@ class EditPage extends React.Component {
               variant="primary"
               onClick={() => {
                 this.setState({ confirmDialog: false, showModal: false });
-                this.fetchMe();
               }}
             >
               Discard
