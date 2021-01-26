@@ -1,9 +1,7 @@
 import React from "react";
 import {
   Col,
-  Container,
   Row,
-  Spinner,
   Alert,
   Card,
   Dropdown,
@@ -15,8 +13,6 @@ import Feature from "./Featured";
 import Sidebar from "./Sidebar";
 import EditPage from "./EditPage";
 import "../styles/Profile.css";
-import { BiPencil } from "react-icons/bi";
-import { IconContext } from "react-icons";
 import { Route } from "react-router-dom";
 class Body extends React.Component {
   state = {
@@ -27,39 +23,17 @@ class Body extends React.Component {
     errMsg: "",
     loading: true,
   };
-  searchProfile = (id) => {
-    fetch("https://striveschool-api.herokuapp.com/api/profile/" + id, {
-      method: "GET",
-      headers: new Headers({
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        ContentType: "application/json",
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-      })
-      .then((info) => {
-        let profile = { ...info };
-        console.log(profile);
-        this.setState({ profile: profile, loading: false });
-      })
-      .catch((error) => {
-        console.log(error);
-        this.setState({
-          loading: false,
-          err: true,
-          errType: "danger",
-          errMsg: error.messasge,
-        });
-      });
-  };
+  
   componentDidMount = async () => {
-    await fetch(process.env.REACT_APP_BE_URL + this.props.match.params.id)
+    let response = await fetch(process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id)
+    let profile = await response.json()
+    this.setState({profile: profile, loading: false})
   };
   componentDidUpdate = async() => {
     await fetch(process.env.REACT_APP_BE_URL + this.props.match.params.id)
+    let response = await fetch(process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id)
+    let profile = await response.json()
+    this.setState({profile: profile, loading: false})
   };
   render() {
     return (
