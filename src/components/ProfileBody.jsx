@@ -24,7 +24,7 @@ class Body extends React.Component {
     loading: true,
     logged: ""
   };
-
+  
   componentDidMount = async () => {
     this.setState({logged: this.props.logged}, ()=> console.log(this.state.logged))
     let response = await fetch(
@@ -33,14 +33,16 @@ class Body extends React.Component {
     let profile = await response.json();
     this.setState({ profile: profile, loading: false });
   };
-  // componentDidUpdate = async () => {
+  componentDidUpdate = async (prevProps) => {
+    if (prevProps.match.params.id !== this.props.match.params.id) {
+      let response = await fetch(
+        process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
+      );
+      let profile = await response.json();
+      this.setState({ profile: profile, loading: false });
+    }
     
-  //   let response = await fetch(
-  //     process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
-  //   );
-  //   let profile = await response.json();
-  //   this.setState({ profile: profile, loading: false });
-  // };
+  };
 
   render() {
     return (

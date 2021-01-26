@@ -9,16 +9,17 @@ import {
 } from "react-bootstrap";
 import { withRouter, Link } from "react-router-dom";
 import { IconContext } from "react-icons";
+import {MdWork} from "react-icons/md"
 import {
   FaLinkedin,
   FaSearch,
-  FaHome,
   FaBell,
   FaUserCircle,
 } from "react-icons/fa";
 import { BsPeopleFill, BsGrid3X3Gap, BsCollectionPlay } from "react-icons/bs";
 import { GiHandBag } from "react-icons/gi";
-import { RiMessage2Fill } from "react-icons/ri";
+import {AiFillHome} from "react-icons/ai"
+import { BsFillChatDotsFill } from "react-icons/bs";
 import "../styles/AppNavBar.css";
 class AppNavBar extends React.Component {
   render() {
@@ -69,7 +70,7 @@ class AppNavBar extends React.Component {
           <div className="ml-auto mr-0 d-flex row justify-content-end">
             <Nav.Link className="navLinkCol" as={Link} to="/Home">
               <Col className="navCol">
-                <FaHome className="navIcon" />
+                <AiFillHome className="navIcon" />
                 <span className="navIconText">Home</span>
               </Col>
             </Nav.Link>
@@ -81,13 +82,13 @@ class AppNavBar extends React.Component {
             </Nav.Link>
             <Nav.Link className="navLinkCol">
               <Col className="navCol">
-                <GiHandBag className="navIcon" />{" "}
+                <MdWork className="navIcon" />{" "}
                 <span className="navIconText">Jobs</span>
               </Col>
             </Nav.Link>
             <Nav.Link className="navLinkCol">
               <Col className="navCol">
-                <RiMessage2Fill className="navIcon" />
+                <BsFillChatDotsFill className="navIcon" />
                 <span className="navIconText">Messaging</span>
               </Col>
             </Nav.Link>
