@@ -34,7 +34,7 @@ class App extends React.Component {
           render={(props) => <Home title="Homepage" {...props} />}
         />
         <Route
-          path={"/:id"}
+          path={"/user/:id"}
           exact
           render={(props) => <Profile {...props} /> }
         />

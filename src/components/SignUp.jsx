@@ -8,10 +8,7 @@ export default class SignUp extends Component {
     user: [],
     hidden: true,
   };
-  url = "https://striveschool-api.herokuapp.com/api/account/register";
-  header = {
-    ContentType: "application/json",
-  };
+  
   addUser = async () => {
     console.log(this.state.user)
     try {let newUser = await fetch(process.env.REACT_APP_BE_URL + "profile", {
@@ -147,6 +144,20 @@ export default class SignUp extends Component {
                     rows={6}
                     value={this.state.user.title}
                     placeholder="What are you currently doing?"
+                    onKeyDown={(e) => this.handleLogin(e)}
+                    onChange={(e) => this.onChangeHandler(e)}
+                  />
+                </Form.Group>
+                </Form.Row>
+                <Form.Row className='center-form'>
+                <Form.Group className="w-75">
+                  <Form.Label>Location</Form.Label>
+                  <Form.Control 
+                    required
+                    id="area"
+                    rows={6}
+                    value={this.state.user.area}
+                    placeholder="Where do you live?"
                     onKeyDown={(e) => this.handleLogin(e)}
                     onChange={(e) => this.onChangeHandler(e)}
                   />

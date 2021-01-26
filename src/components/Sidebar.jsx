@@ -5,19 +5,15 @@ import { Link } from "react-router-dom";
 import vid1 from "../assets/vid1.png";
 import vid2 from "../assets/vid2.png";
 import vid3 from "../assets/vid3.png";
+import Placeholder from '../assets/linkedin-logo.png'
+
 class Sidebar extends Component {
   state = {
     users: [],
     selected: "me",
   };
   componentDidMount = () => {
-    fetch("https://striveschool-api.herokuapp.com/api/profile", {
-      method: "GET",
-      headers: new Headers({
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        ContentType: "application/json",
-      }),
-    })
+    fetch(process.env.REACT_APP_BE_URL +  "profile")
       .then((response) => response.json())
       .then((info) => {
         this.setState({ users: info });
@@ -41,7 +37,7 @@ class Sidebar extends Component {
               <div className="userdiv2" key={`suggestUsers${index}`}>
                 <Link to={`/user/${user._id}`}>
                   <Row>
-                    <img className="userimg" src={user.image} alt="user"></img>
+                    <img className="userimg" src={user.image ? user.image :Placeholder} alt="user"></img>
                     <div>
                       <h6 className="sugUsers" id={`suggestUsers${index}name`}>
                         {user.name}

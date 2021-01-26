@@ -63,7 +63,7 @@ class Experience extends React.Component {
   };
   searchExp = async () => {
     await fetch(
-      `https://striveschool-api.herokuapp.com/api/profile/${this.props.profile._id}/experiences`,
+      `${process.env.REACT_APP_BE_URL}experience/${this.props.profile._id}`,
       {
         method: "GET",
         headers: new Headers({
