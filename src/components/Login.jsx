@@ -101,7 +101,6 @@ class Login extends Component {
                 </Form.Group>
                 <Form.Group className="inputPwd">
                   <Form.Control
-                    required
                     id="password"
                     value={this.state.user.password}
                     type={this.state.hidden ? "password" : "text"}

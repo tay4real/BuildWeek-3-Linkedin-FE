@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import "../styles/Sidebar.css";
 import { Link } from "react-router-dom";
 import vid1 from "../assets/vid1.png";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Card, ListGroup, ListGroupItem, Button } from "react-bootstrap";
+import { Card, ListGroup, ListGroupItem, Button } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 
 class RSidebar extends React.Component {
