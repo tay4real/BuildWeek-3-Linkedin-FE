@@ -13,9 +13,9 @@ import "../styles/Experience.css";
 class Experience extends React.Component {
   state = {
     showModal: false,
-    experience: [],
     selectedId: null,
     exp: {},
+    experience :[]
   };
   // re-order
   grid = 8;
@@ -60,33 +60,58 @@ class Experience extends React.Component {
     result.splice(endIndex, 0, removed);
     return result;
   };
-  
-  componentDidMount = async() => {
+
+  componentDidMount = async () => {
+    this.setState({logged: await JSON.parse(localStorage.getItem('logged'))}, ()=> console.log(this.state.logged))
+    console.log(this.props.profile);
+    await this.setState(
+      { user: this.props.profile, username: this.props.profile.username },
+      () => console.log(this.state.user)
+    );
     await fetch(
-      `${process.env.REACT_APP_BE_URL}experience/${this.props.profile._id}`
+      `${process.env.REACT_APP_BE_URL}experience/${this.state.username}`
     )
       .then((response) => response.json())
       .then((experience) => {
-        if (experience) {
-          this.setState({ experience: experience });
-        } else console.log("Not found")
-        
+        console.table(experience);
+        if (experience !== null) {
+          this.setState({ experience: experience }, () =>
+            console.log("EXP: ", this.state.experience)
+          );
+        } else console.log("No exp found");
       });
   };
-  // componentDidUpdate = () => {
+  componentDidUpdate = async (prevProps) => {
     
-  // };
+    if (prevProps.profile._id !== this.props.profile._id) {
+      let response = await fetch(
+        `${process.env.REACT_APP_BE_URL}experience/${this.props.profile.username}`
+      );
+      let experience = await response.json();
+      this.setState({ experience: experience }, () =>
+        console.log(this.state.experience)
+      );
+      console.log("EXP: ", this.state.experience)
+      await this.setState(
+        { user: this.props.profile, username: this.props.profile.username },
+        () => console.log(this.state.username)
+      );
+    }
+  };
   toggleModal = (job) => {
     if (job === undefined) {
-      this.setState({
-        selectedId: null,
-        showModal: this.state.showModal === false ? true : false,
-      }, ()=> console.log(this.state));
+      this.setState(
+        {
+          selectedId: null,
+          showModal: this.state.showModal === false ? true : false,
+        },
+        () => console.log(this.state)
+      );
     } else {
       this.setState({
         selectedId: job._id,
         showModal: !this.state.showModal,
-      })
+      });
     }
   };
 
@@ -100,8 +125,8 @@ class Experience extends React.Component {
                 Experience
               </div>
 
-              <Route path={"/user/"+this.props.logged}>
-                <Button variant="white" onClick={()=>this.toggleModal()}>
+              <Route path={"/user/" + this.props.logged}>
+                <Button variant="white" onClick={() => this.toggleModal()}>
                   <IconContext.Provider
                     value={{
                       size: "24px",
@@ -119,88 +144,95 @@ class Experience extends React.Component {
               <Droppable droppableId="droppable">
                 {(provided, snapshot) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
-                    {this.state.experience.map((experience, index) => (
-                      <Draggable
-                        key={experience._id}
-                        draggableId={experience._id}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <Row noGutters>
-                              <div style={{ width: "48px" }}>
-                                <img
-                                  src={
-                                    experience.image ? experience.image : Job
-                                  }
-                                  style={{ width: "48px" }}
-                                />
-                              </div>
-                              <Col>
-                                <ul
-                                  id={experience._id}
-                                  key={`exp${index}`}
-                                  className="exp"
-                                >
-                                  <Route path={"/user/"+this.props.logged}>
-                                    <Button
-                                      variant="white"
-                                      className="editBtnExp"
-                                      onClick={() =>
-                                        this.toggleModal(experience)
-                                      }
-                                    >
-                                      <IconContext.Provider
-                                        value={{
-                                          size: "24px",
-                                          className: "expIcons",
-                                          color: "#0A66CE",
-                                        }}
+                    {this.state.experience.length > 1 ?
+                      this.state.experience.map((exp, index) => (
+                        <Draggable
+                          key={exp._id}
+                          draggableId={exp._id}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <Row noGutters>
+                                <div style={{ width: "48px" }}>
+                                  <img
+                                    src={
+                                      exp.image && exp.image
+                                    }
+                                    style={{ width: "48px" }}
+                                  />
+                                </div>
+                                <Col>
+                                  <ul
+                                    id={this.state.user._id}
+                                    key={`exp${index}`}
+                                    className="exp"
+                                  >
+                                    <Route path={"/user/" + this.state.logged._id }>
+                                      <Button
+                                        variant="white"
+                                        className="editBtnExp"
+                                        onClick={() =>
+                                          this.toggleModal(exp)
+                                        }
                                       >
-                                        <BiPencil />
-                                      </IconContext.Provider>
-                                    </Button>
-                                  </Route>
-                                  <li className="expEntries">
-                                    <div class="roleExp">{experience.role}</div>
-                                  </li>
-                                  <li className="expEntries">
-                                    <div class="workplaceExp">
-                                      {experience.company}
-                                    </div>
-                                  </li>
-                                  <li className="expEntries">
-                                    <div class="timeExp">
-                                      {moment(experience.startDate).format(
-                                        "MM/YYYY"
-                                      )}  -  {experience.endDate ? moment(experience.endDate).format(
-                                        "MM/YYYY"
-                                      ) : "Current"}
-                                    </div>
-                                    <div class="timeExp">
-                                      
-                                    </div>
-                                  </li>
+                                        <IconContext.Provider
+                                          value={{
+                                            size: "24px",
+                                            className: "expIcons",
+                                            color: "#0A66CE",
+                                          }}
+                                        >
+                                          <BiPencil />
+                                        </IconContext.Provider>
+                                      </Button>
+                                    </Route>
+                                    <li className="expEntries">
+                                      <div class="roleExp">
+                                        {exp.role}
+                                      </div>
+                                    </li>
+                                    <li className="expEntries">
+                                      <div class="workplaceExp">
+                                        {exp.company}
+                                      </div>
+                                    </li>
+                                    <li className="expEntries">
+                                      <div class="timeExp">
+                                        {moment(exp.startDate).format(
+                                          "MM/YYYY"
+                                        )}{" "}
+                                        -{" "}
+                                        {exp.endDate
+                                          ? moment(exp.endDate).format(
+                                              "MM/YYYY"
+                                            )
+                                          : "Current"}
+                                      </div>
+                                      <div class="timeExp"></div>
+                                    </li>
 
-                                  <li className="expEntries">
-                                    <div class="cityExp">{experience.area}</div>
-                                  </li>
-                                  <li className="expEntries">
-                                    <div class="descExp">
-                                      {experience.description}
-                                    </div>
-                                  </li>
-                                </ul>
-                              </Col>
-                            </Row>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
+                                    <li className="expEntries">
+                                      <div class="cityExp">
+                                        {exp.area}
+                                      </div>
+                                    </li>
+                                    <li className="expEntries">
+                                      <div class="descExp">
+                                        {exp.description}
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </Col>
+                              </Row>
+                            </div>
+                          )}
+                        </Draggable>
+                      )): <></>}
                     {provided.placeholder}
                   </div>
                 )}
@@ -208,11 +240,11 @@ class Experience extends React.Component {
             </DragDropContext>
           </Card.Body>
         </Card>
-        <Route path={"/user/"+this.props.logged}>
+        <Route path={"/user/" + this.props.logged}>
           {" "}
           <Edit
             show={this.state.showModal}
-            userId={this.props.profile._id}
+            userId={this.state.user && this.state.user._id}
             expId={this.state.selectedId}
             toggle={() => this.toggleModal()}
             refetch={() => this.searchExp()}

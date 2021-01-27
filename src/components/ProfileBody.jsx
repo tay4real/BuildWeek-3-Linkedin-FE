@@ -26,7 +26,7 @@ class Body extends React.Component {
   };
   
   componentDidMount = async () => {
-    this.setState({logged: await JSON.parse(localStorage.getItem('logged'))._id}, ()=> console.log(this.state.logged))
+    this.setState({logged: await JSON.parse(localStorage.getItem('logged'))}, ()=> console.log(this.state.logged))
     let response = await fetch(
       process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
     );
