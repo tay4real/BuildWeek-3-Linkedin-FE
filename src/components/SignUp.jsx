@@ -176,7 +176,7 @@ class SignUp extends React.Component {
             </div>
             <Row className="d-flex justify-content-around mt-4 mx-auto ">
               Already on LinkedIn?{" "}
-              <Link className="ml-1" to="/login">
+              <Link className="ml-1" to="/">
                 {" "}
                 Sign in
               </Link>

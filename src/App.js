@@ -6,7 +6,10 @@ import Footer from "./components/Footer";
 import Profile from "./components/ProfileBody";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+<<<<<<< Updated upstream
 import { useState } from "react";
+=======
+>>>>>>> Stashed changes
 // import PostModal from "./components/PostModal";
 import "bootstrap/dist/css/bootstrap.min.css";
 
