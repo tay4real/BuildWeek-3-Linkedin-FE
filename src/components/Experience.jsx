@@ -125,7 +125,7 @@ class Experience extends React.Component {
                 Experience
               </div>
 
-              <Route path={"/user/" + this.props.logged}>
+              <Route path={"/user/" + this.props.logged._id}>
                 <Button variant="white" onClick={() => this.toggleModal()}>
                   <IconContext.Provider
                     value={{

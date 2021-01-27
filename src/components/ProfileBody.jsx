@@ -125,7 +125,7 @@ class Body extends React.Component {
                         </Col>
                         <Col lg={6}>
                           <div className="btnBox">
-                            <Route path={"/user/"+this.state.logged}>
+                            <Route path={"/user/"+this.state.logged._id}>
                               {" "}
                               <DropdownButton
                                 className="d-none d-lg-block"
