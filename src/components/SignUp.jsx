@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Row, Col, Form, Button, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import FooterLogo from "../footer_logo.svg";
 import "../styles/SignUp.css";
-export default class SignUp extends Component {
+class SignUp extends React.Component {
   state = {
     user: [],
     hidden: true,
@@ -23,7 +23,7 @@ export default class SignUp extends Component {
       console.log("There is a problem with your application.")
     } else if (newUser.statusText === "Created") {
       let user = await newUser.json()
-      this.props.history.push(`/user/${user._id}`)
+      this.props.history.push(`/`)
     }
     } catch(error) {
       console.log(error)
@@ -187,3 +187,4 @@ export default class SignUp extends Component {
     );
   }
 }
+export default withRouter(SignUp)
