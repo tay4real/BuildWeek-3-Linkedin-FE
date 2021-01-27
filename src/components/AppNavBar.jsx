@@ -22,6 +22,13 @@ import {AiFillHome} from "react-icons/ai"
 import { BsFillChatDotsFill } from "react-icons/bs";
 import "../styles/AppNavBar.css";
 class AppNavBar extends React.Component {
+  state = {
+    user: ''
+  }
+  componentDidMount = async() => {
+    let user = await JSON.parse(localStorage.getItem('logged'));
+    this.setState({user: user._id}, ()=>console.log(this.state.user))
+  }
   render() {
     return (
       <Navbar bg="white" variant="light" className="py-0 fixed-top">
@@ -98,7 +105,7 @@ class AppNavBar extends React.Component {
                 <span className="navIconText">Notifications</span>
               </Col>
             </Nav.Link>
-            <Nav.Link className="navLinkCol" as={Link} to="/">
+            <Nav.Link className="navLinkCol" as={Link} to={'/user/' + this.state.user}>
               <Col className="navCol">
                 <FaUserCircle className="navIcon" />
                 <span className="navIconText">Me</span>

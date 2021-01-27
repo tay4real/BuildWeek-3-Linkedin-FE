@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
+import {Link} from 'react-router-dom'
 import { IconContext } from "react-icons";
 import { FaQuestionCircle } from "react-icons/fa";
 import { BsFillGearFill } from "react-icons/bs";
@@ -29,7 +30,8 @@ class footer extends React.Component {
                     Commnunity Guidelines <br />
                     Privacy & Terms <br />
                     Sales Solutions <br />
-                    Safety Center
+                    Safety Center <br />
+                    
                   </p>
                 </Col>
                 <Col xs={4}>
@@ -38,6 +40,7 @@ class footer extends React.Component {
                     Careers <br />
                     Ad Choices <br />
                     Mobile <br />
+                   <Link onClick={async()=> {await localStorage.clear(); console.log("cleared")}} to='/'> <strong>Sign Out</strong> </Link>
                   </p>
                 </Col>
                 <Col xs={4}>
@@ -80,6 +83,7 @@ class footer extends React.Component {
                       <h6>Manage your account and privacy</h6>
                       <span>Go to your Settings.</span>
                     </div>
+                    
                   </Row>
                 </Col>
                 <Col xs={6}>

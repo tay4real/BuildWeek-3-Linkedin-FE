@@ -19,7 +19,8 @@ class EditPage extends React.Component {
   };
   
   componentDidMount = async()=> {
-    console.log("Modal mounted with ", this.state.logged)
+    let user = await JSON.parse(localStorage.getItem('logged'));
+    this.setState({logged: user._id}, ()=> "Modal mounted with ", this.state.logged)
     try {
       const pFetch = await fetch(
         process.env.REACT_APP_BE_URL + "profile/" + this.state.logged,
@@ -59,6 +60,16 @@ class EditPage extends React.Component {
     } catch (e) {
       console.log(e);
     }
+    try {
+      const pFetch = await fetch(
+        process.env.REACT_APP_BE_URL + "profile/" + this.state.logged,
+      );
+      const pResponse = await pFetch.json();
+      this.setState({ profile: pResponse });
+      this.setState({ showModal: false });
+    } catch(error) {
+      console.log(error)
+    }
   };
   handleCloseModal = async () => {
     (await JSON.stringify(this.props.profile)) !==
@@ -73,7 +84,7 @@ class EditPage extends React.Component {
     }, ()=> console.log(this.state.selectedFile));
   };
 
-  fileUploadHandler = async () => { //base 64 with fileReader
+  fileUploadHandler = async () => { 
     const fd = new FormData();
     fd.append("image", this.state.selectedFile); //do not await 
     try {
@@ -82,7 +93,7 @@ class EditPage extends React.Component {
         {
           method: "POST",
           body: fd,
-          //redirect: 'follow' //it was all your fault 
+          //redirect: 'follow' 
         }
       );
       if (response.ok) {

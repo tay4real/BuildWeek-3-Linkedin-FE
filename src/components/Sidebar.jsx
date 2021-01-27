@@ -16,7 +16,9 @@ class Sidebar extends Component {
     fetch(process.env.REACT_APP_BE_URL +  "profile")
       .then((response) => response.json())
       .then((info) => {
-        this.setState({ users: info });
+        let logged = JSON.parse(localStorage.getItem('logged'));
+        let filtered_users = info.filter((user)=> user._id !== logged._id)
+        this.setState({ users: filtered_users }, ()=> console.log("Sidebar: ", this.state.users));
       });
   };
   render() {
