@@ -24,7 +24,7 @@ function App(props) {
 
   return (
     <Router>
-      <Route path={["/:id", "/home"]}>
+      <Route path={["/user/:id", "/home"]}>
         {" "}
         <AppNavBar query={query} searchHandler={searchHandler} />{" "}
       </Route>
