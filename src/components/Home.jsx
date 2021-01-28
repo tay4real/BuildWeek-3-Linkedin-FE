@@ -6,10 +6,11 @@ import {
   Row,
   Col,
   Card,
-  Alert,
-  Form,
+  Alert
 } from "react-bootstrap";
-import { BiLike, BiCommentDetail, BiShare, BiSend } from "react-icons/bi";
+import { BiLike, BiCommentDetail} from "react-icons/bi";
+import {IoArrowRedoOutline} from 'react-icons/io5'
+import {FiSend} from 'react-icons/fi'
 import EditPost from "./EditPost";
 import PostModal from "./PostModal";
 import RSidebar from "./RSidebar";
@@ -112,18 +113,18 @@ export default class Home extends Component {
                     )}
                     
                     <Card.Footer className="HomeModal bg-white">
-                      <Button variant="outline-dark mx-1">
-                        <BiLike /> Like
+                      <Button variant="mx-1" style={{color: 'dimgrey'}}>
+                        <BiLike style={{width: '25px', height: '25px'}} /> Like
                       </Button>
-                      <Button variant="outline-dark mx-1" onClick={()=> this.setState({newComment: true})}>
-                        <BiCommentDetail /> Comment
+                      <Button variant="mx-1" style={{color: 'dimgrey'}} onClick={()=> this.setState({newComment: true})}>
+                        <BiCommentDetail style={{width: '25px', height: '25px'}}/> Comment
                       </Button>
                       
-                      <Button variant="outline-dark mx-1">
-                        <BiShare /> Share
+                      <Button variant="mx-1" style={{color: 'dimgrey'}}>
+                        <IoArrowRedoOutline style={{width: '25px', height: '25px'}}/> Share
                       </Button>
-                      <Button variant="outline-dark mx-1">
-                        <BiSend /> Send
+                      <Button variant="mx-1" style={{color: 'dimgrey'}}>
+                        <FiSend style={{width: '25px', height: '25px'}}/> Send
                       </Button>
                     </Card.Footer>
                     

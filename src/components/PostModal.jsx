@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Col, Row, Modal, Image, Form, Card } from "react-bootstrap";
 import { FaCamera, FaVideo, FaStickyNote, FaPenSquare } from "react-icons/fa";
-import { BiPencil } from "react-icons/bi";
+import { HiPencilAlt } from "react-icons/hi";
 import { IconContext } from "react-icons";
 import { withRouter } from "react-router-dom";
 import "../styles/PostModal.css";
@@ -104,10 +104,10 @@ class PostModal extends React.Component {
         <Card className="bg-white p-4">
           <Button
             className="postButton"
-            variant="outline-dark"
+            variant='none'
             onClick={() => this.setState({ showModal: true })}
           >
-            <BiPencil /> Start a Discussion
+            <div className='btn-content'> <HiPencilAlt style={{width: '28px', height: '28px', color: 'dimgray', marginRight: '7px'}} /> Start a Discussion </div>
           </Button>
         </Card>
         <Modal
