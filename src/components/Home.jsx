@@ -23,22 +23,18 @@ export default class Home extends Component {
     errType: null,
     errMsg: "",
     loading: true,
+    logged: "",
   };
+
   fetchPost = async () => {
-    console.log("fetchPost");
     try {
-      const response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/posts/",
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      let response = await fetch(process.env.REACT_APP_BE_URL + "post");
       if (response.ok) {
         let postResponse = await response.json();
-        postResponse = postResponse.reverse().slice(0, 50);
-        this.setState({ posts: postResponse, loading: false });
+        const posts = postResponse.posts;
+        console.log(posts);
+
+        this.setState({ posts: posts.reverse(), loading: false });
       }
     } catch (error) {
       console.log(error);
@@ -50,27 +46,23 @@ export default class Home extends Component {
       });
     }
   };
+
   fetchMe = async () => {
     try {
-      const meFetch = await fetch(
-        "https://striveschool-api.herokuapp.com/api/profile/me",
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
+      this.setState(
+        { me: await JSON.parse(localStorage.getItem("logged")) },
+        () => console.log(this.state.me)
       );
-      const meResponse = await meFetch.json();
-      console.log(meResponse);
-      this.setState({ me: meResponse });
     } catch (error) {
       console.log(error);
     }
   };
+
   componentDidMount() {
     this.fetchPost();
     this.fetchMe();
   }
+
   render() {
     return (
       <div className="homeDiv">
@@ -81,7 +73,7 @@ export default class Home extends Component {
           {this.state.loading && this.state.err !== true ? (
             <div
               style={{ position: "relative", top: "8vh", left: "25vw" }}
-              class="lds-facebook"
+              className="lds-facebook"
             ></div>
           ) : Object.keys(this.state.posts).length !== 0 ? (
             <Row>
@@ -98,17 +90,17 @@ export default class Home extends Component {
                     <Card.Header className="d-flex justify-content-between px-3">
                       <div>
                         <Image
-                          src={post.user.image}
+                          src={post.profiles[0].image}
                           className="postModalImg mr-3"
                           roundedCircle
                         />
-                        {post.user.name + " " + post.user.surname}
+                        {post.profiles[0].name + " " + post.profiles[0].surname}
                       </div>
                       <EditPost post={post} refetch={() => this.fetchPost()} />
                     </Card.Header>
-                    {post.image && (
+                    {post.postimageUrl && (
                       <Card.Img
-                        src={post.image}
+                        src={post.postimageUrl}
                         alt="PostImage"
                         className="postImage"
                       />

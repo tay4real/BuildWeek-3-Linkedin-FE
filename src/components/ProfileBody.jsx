@@ -33,6 +33,7 @@ class Body extends React.Component {
     let profile = await response.json();
     this.setState({ profile: profile, loading: false });
   };
+
   componentDidUpdate = async (prevProps) => {
     if (prevProps.match.params.id !== this.props.match.params.id) {
       let response = await fetch(
