@@ -107,7 +107,7 @@ class PostModal extends React.Component {
             variant="outline-dark"
             onClick={() => this.setState({ showModal: true })}
           >
-            <BiPencil /> Start a Post
+            <BiPencil /> Start a Discussion
           </Button>
         </Card>
         <Modal
@@ -125,6 +125,7 @@ class PostModal extends React.Component {
                   src={this.props.me.image}
                   roundedCircle
                   className="postModalImg"
+                  style={{objectFit: 'cover'}}
                 />
                 <strong className="ml-5">
                   {this.props.me.name + " " + this.props.me.surname}

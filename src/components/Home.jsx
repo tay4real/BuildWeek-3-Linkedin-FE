@@ -107,6 +107,7 @@ export default class Home extends Component {
                         src={post.postimageUrl}
                         alt="PostImage"
                         className="postImage"
+                        
                       />
                     )}
                     
