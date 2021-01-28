@@ -85,6 +85,7 @@ class PostModal extends React.Component {
         const data = await response.json();
 
         console.log(data);
+        this.setState({post: ''})
         if (this.state.selectedFile !== null) {
           this.fileUploadHandler(data); // upload the file
         }
