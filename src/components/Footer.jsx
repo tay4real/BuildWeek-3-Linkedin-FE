@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
+import {withRouter} from"react-router-dom"
 import { IconContext } from "react-icons";
 import { FaQuestionCircle } from "react-icons/fa";
 import { BsFillGearFill } from "react-icons/bs";
@@ -38,6 +39,10 @@ class footer extends React.Component {
                     Careers <br />
                     Ad Choices <br />
                     Mobile <br />
+                    <strong onClick={()=> {
+                      localStorage.clear()
+                      this.props.history.push("/signup")
+                    }}>Log Out</strong>
                   </p>
                 </Col>
                 <Col xs={4}>
@@ -106,4 +111,4 @@ class footer extends React.Component {
     );
   }
 }
-export default footer;
+export default withRouter(footer);

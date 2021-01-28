@@ -4,18 +4,19 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import { IconContext } from "react-icons";
 import { BiPencil } from "react-icons/bi";
 import { BsPlus } from "react-icons/bs";
-import Job from "../assets/job.png";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Route } from "react-router-dom";
 import moment from "moment";
-// import "../styles/Profile.css";
 import "../styles/Experience.css";
 class Experience extends React.Component {
   state = {
     showModal: false,
-    selectedId: null,
+    selectedId: '',
+    expId: '',
     exp: {},
-    experience :[]
+    experience :[],
+    loading: true,
+    profile: JSON.parse(localStorage.getItem('logged'))
   };
   // re-order
   grid = 8;
@@ -63,6 +64,7 @@ class Experience extends React.Component {
 
   componentDidMount = async () => {
     this.setState({logged: await JSON.parse(localStorage.getItem('logged'))}, ()=> console.log(this.state.logged))
+
     console.log(this.props.profile);
     await this.setState(
       { user: this.props.profile, username: this.props.profile.username },
@@ -75,15 +77,18 @@ class Experience extends React.Component {
       .then((experience) => {
         console.table(experience);
         if (experience !== null) {
+
           this.setState({ experience: experience }, () =>
             console.log("EXP: ", this.state.experience)
           );
         } else console.log("No exp found");
       });
+      this.setState({loading: false})
   };
-  componentDidUpdate = async (prevProps) => {
+  componentDidUpdate = async(prevProps) => {
     
     if (prevProps.profile._id !== this.props.profile._id) {
+      this.setState({loading: true})
       let response = await fetch(
         `${process.env.REACT_APP_BE_URL}experience/${this.props.profile.username}`
       );
@@ -93,7 +98,7 @@ class Experience extends React.Component {
       );
       console.log("EXP: ", this.state.experience)
       await this.setState(
-        { user: this.props.profile, username: this.props.profile.username },
+        { user: this.props.profile, username: this.props.profile.username, loading: false },
         () => console.log(this.state.username)
       );
     }
@@ -103,21 +108,49 @@ class Experience extends React.Component {
       this.setState(
         {
           selectedId: null,
-          showModal: this.state.showModal === false ? true : false,
+          showModal: this.state.showModal === false ? true : false
         },
         () => console.log(this.state)
       );
     } else {
       this.setState({
         selectedId: job._id,
+        expId: job._id,
         showModal: !this.state.showModal,
-      });
+      }, ()=> console.log("Selected exp ID:", this.state.selectedId));
     }
   };
+  searchExp = async() => {
+    await this.setState({loading: true})
+    await fetch(
+      `${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`
+    )
+      .then((response) => response.json())
+      .then((experience) => {
+        console.table(experience);
+        if (experience !== null) {
+          this.setState({ experience: experience }, () =>
+            console.log("EXP: ", this.state.experience)
+          );
+        } else console.log("No exp found");
+      });
+      this.setState({loading: false})
+  }
 
   render() {
     return (
-      <>
+      <>{this.state.loading ?  
+        <div className="lds-roller">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      : 
         <Card className="bio cardProf">
           <Card.Body>
             <Row className="d-flex justify-content-between ml-1">
@@ -125,7 +158,7 @@ class Experience extends React.Component {
                 Experience
               </div>
 
-              <Route path={"/user/" + this.props.logged._id}>
+              <Route path={"/user/" + this.state.profile._id}>
                 <Button variant="white" onClick={() => this.toggleModal()}>
                   <IconContext.Provider
                     value={{
@@ -240,17 +273,20 @@ class Experience extends React.Component {
             </DragDropContext>
           </Card.Body>
         </Card>
-        <Route path={"/user/" + this.props.logged}>
+        }
+        <Route path={"/user/" + this.state.profile._id}>
           {" "}
           <Edit
             show={this.state.showModal}
             userId={this.state.user && this.state.user._id}
-            expId={this.state.selectedId}
+            expId={this.state.selectedId && this.state.selectedId}
             toggle={() => this.toggleModal()}
             refetch={() => this.searchExp()}
             color="#0A66CE"
           />
+          
         </Route>
+  
       </>
     );
   }
