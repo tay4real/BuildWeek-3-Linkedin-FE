@@ -1,6 +1,7 @@
 import React from "react";
 // import { useState } from "react";
-import { Button, Modal, Form, Row, Col} from "react-bootstrap";
+import { Button, Modal, Form, Row, Col } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
 import "../App.css";
 import "../styles/Profile.css";
 class Edit extends React.Component {
@@ -9,25 +10,20 @@ class Edit extends React.Component {
     experience: {},
     selectedFile: null,
     imgSubmitStatus: "secondary",
+    profile: JSON.parse(localStorage.getItem("logged")),
   };
-  url = process.env.REACT_APP_BE_URL;
-  headers = {
-    Authorization: "Bearer " + localStorage.getItem("token"),
-    "Content-Type": "application/json",
-  };
+
   fetchExp = async () => {
     try {
       if (this.props.expId !== null) {
         const response = await fetch(
-          `${this.url}${this.props.userId}/experiences/${this.props.expId}`,
-          {
-            method: "GET",
-            headers: this.headers,
-          }
+          `${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`
         );
         const data = await response.json();
         if (response.ok) {
-          this.setState({ experience: data });
+          this.setState({ experience: data }, () =>
+            console.log(this.state.experience)
+          );
         }
       }
     } catch (e) {
@@ -35,27 +31,38 @@ class Edit extends React.Component {
     }
   };
   onChangeHandler = (e) => {
-    this.setState({
-      experience: {
-        ...this.state.experience,
-        [e.target.id]: e.currentTarget.value,
+    this.setState(
+      {
+        experience: {
+          ...this.state.experience,
+          [e.target.id]: e.currentTarget.value,
+        },
       },
-    });
+      () => console.log(this.state.experience)
+    );
   };
   submitData = async (str) => {
     const url =
       str === "POST"
-        ? `${this.url}${this.props.userId}/experiences`
+        ? `${process.env.REACT_APP_BE_URL}${this.props.userId}/experiences`
         : `${this.url}${this.props.userId}/experiences/${this.props.expId}`;
-    const payload = JSON.stringify(this.state.experience);
+    const payload = {...this.state.experience, profiles: this.state.profile._id
+    };
+    console.log("PREPARED: ", payload);
     try {
-      console.log(payload, str);
-      const response = await fetch(url, {
-        method: str,
-        headers: this.headers,
-        body: payload,
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`,
+        {
+          method: str,
+          body: {...payload, profiles: this.state.profile._id
+          },
+          headers: { 
+            "Content-Type": "application/json"
+          }
+        }, 
+      );
       if (response.ok) {
+        console.log("SENDING: ", this.state.experience, response);
         if (this.state.selectedFile !== null) {
           this.fileUploadHandler();
         } else {
@@ -63,11 +70,11 @@ class Edit extends React.Component {
           this.props.refetch();
         }
       } else {
-        console.log("submit failed");
+        throw new Error("Internal Server Error");
       }
       // this.fetchExp();
     } catch (e) {
-      console.log(e);
+      console.log("There was a problem:", e);
     }
   };
   actionBtn = (str) => {
@@ -257,4 +264,4 @@ class Edit extends React.Component {
     );
   }
 }
-export default Edit;
+export default withRouter(Edit);
