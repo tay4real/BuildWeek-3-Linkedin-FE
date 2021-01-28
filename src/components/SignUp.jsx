@@ -24,6 +24,10 @@ class SignUp extends React.Component {
         console.log("There is a problem with your application.");
       } else if (newUser.statusText === "Created") {
         let user = await newUser.json();
+        localStorage.setItem(
+          "logged",
+          await JSON.stringify(this.state.user)
+        );
         this.props.history.push(`/user/${user._id}`);
       }
     
@@ -180,11 +184,11 @@ class SignUp extends React.Component {
                 <a>Cookie Policy</a>.
               </span>
               <Col className="signupCol px-0">
-                <Link to='/'>
+                
                 <Button className="signupBtn" onClick={() => this.addUser()}>
                   Agree & Join
                 </Button>
-                </Link>
+               
               </Col>
             </div>
             <Row className="d-flex justify-content-around mt-4 mx-auto ">
