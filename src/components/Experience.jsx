@@ -15,7 +15,8 @@ class Experience extends React.Component {
     showModal: false,
     selectedId: null,
     exp: {},
-    experience :[]
+    experience :[],
+    profile: JSON.parse(localStorage.getItem('logged'))
   };
   // re-order
   grid = 8;
@@ -125,7 +126,7 @@ class Experience extends React.Component {
                 Experience
               </div>
 
-              <Route path={"/user/" + this.props.logged._id}>
+              <Route path={"/user/" + this.state.profile._id}>
                 <Button variant="white" onClick={() => this.toggleModal()}>
                   <IconContext.Provider
                     value={{
@@ -240,7 +241,7 @@ class Experience extends React.Component {
             </DragDropContext>
           </Card.Body>
         </Card>
-        <Route path={"/user/" + this.props.logged}>
+        <Route path={"/user/" + this.state.profile._id}>
           {" "}
           <Edit
             show={this.state.showModal}

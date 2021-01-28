@@ -44,8 +44,8 @@ class Edit extends React.Component {
   submitData = async (str) => {
     const url =
       str === "POST"
-        ? `${process.env.REACT_APP_BE_URL}${this.props.userId}/experiences`
-        : `${this.url}${this.props.userId}/experiences/${this.props.expId}`;
+        ? `${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`
+        : `${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`;
     const payload = {...this.state.experience, profiles: this.state.profile._id
     };
     console.log("PREPARED: ", payload);
@@ -54,11 +54,11 @@ class Edit extends React.Component {
         `${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`,
         {
           method: str,
-          body: {...payload, profiles: this.state.profile._id
-          },
-          headers: { 
+          body: JSON.stringify({...payload, profiles: this.state.profile._id
+          }),
+          headers: new Headers( { 
             "Content-Type": "application/json"
-          }
+          })
         }, 
       );
       if (response.ok) {
