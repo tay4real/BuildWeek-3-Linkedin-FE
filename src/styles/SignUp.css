@@ -7,8 +7,15 @@ div:not(.modal-content) {
   height: 100vh;
 }
 .signupBox {
+  font-family: fantasy;
+  font-weight: bold;
+  font-style: oblique;
+
+  font-stretch: expanded;
   width: 800px;
   border-radius: 8px;
+  border: 5px rgb(61, 61, 221) solid;
+  box-shadow: 5px 10px #888888;
 }
 .signupCol {
   background-color: white !important;
@@ -19,7 +26,10 @@ div:not(.modal-content) {
   align-self: center;
   padding: 2rem;
 }
-.center-form { 
+.formButton {
+  box-shadow: 5px 10px #888888;
+}
+.center-form {
   display: flex;
   flex-direction: row;
   justify-content: center;
