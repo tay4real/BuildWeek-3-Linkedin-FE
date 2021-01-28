@@ -33,31 +33,31 @@ class PostModal extends React.Component {
   };
 
   fileSelectHandler = (event) => {
-    this.setState({
-      postimage: event.target.files[0],
-      imgSubmitStatus: "success",
-    });
+    this.setState(
+      {
+        selectedFile: event.target.files[0],
+        imgSubmitStatus: "success",
+      },
+      () => console.log(this.state.selectedFile)
+    );
   };
 
   fileUploadHandler = async (postId) => {
     const fd = new FormData();
-    fd.append("postimage", this.state.postimage);
-    console.log(fd);
+    fd.append("postimage", this.state.selectedFile);
+    // console.log(fd);
     try {
       const response = await fetch(
         process.env.REACT_APP_BE_URL + `post/image/${postId}`,
         {
           method: "POST",
           body: fd,
-          headers: new Headers({
-            "Content-Type": "application/json",
-          }),
         }
       );
 
       if (response.ok) {
+        console.log(await response.json());
         this.setState({ showModal: false }, () => this.props.refetch());
-        console.log("posted with a image");
       } else {
         this.setState({ showModal: false });
       }
@@ -85,14 +85,16 @@ class PostModal extends React.Component {
         const data = await response.json();
 
         console.log(data);
-        this.fileUploadHandler(data);
+        if (this.state.selectedFile !== null) {
+          this.fileUploadHandler(data); // upload the file
+        }
 
         this.setState({ showModal: false }, () => this.props.refetch());
       } else {
-        this.setState({ showModal: false });
+        throw new Error("Internal Server Error");
       }
     } catch (e) {
-      console.log(e);
+      console.log("There was a problem: ", e);
     }
   };
 
