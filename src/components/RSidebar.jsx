@@ -11,6 +11,10 @@ class RSidebar extends React.Component {
     localStorage.clear();
     this.props.history.push("/");
   };
+  componentDidMount = async() => {
+    this.setState({user: localStorage.getItem("logged")})
+
+  }
   render() {
     return (
       <>
@@ -28,7 +32,7 @@ class RSidebar extends React.Component {
             <div>
               <div style={{ marginTop: "-130px" }}>
                 <img
-                  src={localStorage.getItem("logged").image ? localStorage.getItem("logged").image : Placeholder}
+                  src={ this.state.user.image ? this.state.user.image : Placeholder}
                   alt="placeholder"
                   height="120px"
                   width="120px"
