@@ -16,7 +16,7 @@ class Edit extends React.Component {
     try {
       if (this.props.expId !== null) {
         const response = await fetch(
-          `${process.env.REACT_APP_BE_URL}experience/experiences/${this.state.expId}`
+          `${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`
         );
         const data = await response.json();
         if (response.ok) {
@@ -105,12 +105,13 @@ class Edit extends React.Component {
 
   fileUploadHandler = async () => {
     const fd = new FormData();
-    fd.append("image", this.state.selectedFile);
+    fd.append("experience", this.state.selectedFile);
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BE_URL}experience/upload/${this.state.selectedFile}`,
+        `https://striveschool-api.herokuapp.com/api/profile/${this.props.userId}/experiences/${this.props.expId}/picture`,
         {
           method: "POST",
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
           body: fd,
         }
       );
