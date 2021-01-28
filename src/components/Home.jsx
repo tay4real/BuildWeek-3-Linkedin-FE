@@ -95,7 +95,6 @@ export default class Home extends Component {
                         <Image
                           src={post.profiles[0].image}
                           className="postModalImg mr-3"
-                          style={{objectFit: 'cover'}}
                           roundedCircle
                         />
                         {post.profiles[0].name + " " + post.profiles[0].surname}
@@ -108,7 +107,6 @@ export default class Home extends Component {
                         src={post.postimageUrl}
                         alt="PostImage"
                         className="postImage"
-                        
                       />
                     )}
                     
