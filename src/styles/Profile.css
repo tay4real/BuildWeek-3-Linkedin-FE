@@ -96,7 +96,14 @@ a {
   padding-top: 10px;
   padding-bottom: 1vw;
 }
-
+.loader-wrap {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 .lds-roller {
   display: inline-block;
   position: relative;
