@@ -200,7 +200,7 @@ class Experience extends React.Component {
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                               >
-                                <div className='exps'>
+                                <div className='exps mb-2'>
                                   <div style={{ width: "80px", border: 'none', display: 'flex', flexDirection: "column", justifyContent: 'center' }}>
                                     <img
                                       src={exp.image ? exp.image: 'https://placehold.it/80x80'}

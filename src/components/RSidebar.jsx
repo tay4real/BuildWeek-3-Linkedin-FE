@@ -49,7 +49,6 @@ class RSidebar extends React.Component {
                 Welcome
                 {" " + this.props.me.name + "!"}
               </p>
-              <Card.Link>Add sessines</Card.Link>
             </Card.Text>
           </Card.Body>
           <ListGroup className="list-group-flush">

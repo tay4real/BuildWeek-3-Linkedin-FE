@@ -9,7 +9,6 @@ import {
 } from "react-bootstrap";
 import Bio from "./BioCard";
 import Experience from "./Experience";
-import Feature from "./Featured";
 import Sidebar from "./Sidebar";
 import EditPage from "./EditPage";
 import "../styles/Profile.css";
@@ -177,10 +176,7 @@ class Body extends React.Component {
                   profile={this.state.profile}
                   refetch={() => this.searchProfile(this.state.profile._id)}
                 />
-                <Route path={"/user/"+this.state.logged._id}>
-                  {" "}
-                  <Feature />{" "}
-                </Route>
+                
                 <Experience profile={this.state.profile} logged={this.state.logged._id} />
               </Col>
               <Col

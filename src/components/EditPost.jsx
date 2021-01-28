@@ -11,6 +11,7 @@ class EditPost extends React.Component {
     post: {},
     postimage: null,
     imgSubmitStatus: "secondary",
+    logged: JSON.parse(localStorage.getItem("logged"))
   };
 
   onChangeHandler = (e) => {
@@ -100,7 +101,7 @@ class EditPost extends React.Component {
   render() {
     return (
       <>
-        <div
+        {this.state.content.username === this.state.logged.username && <div
           onClick={() => this.setState({ showModal: true })}
           className="JumbBiPencilDiv"
         >
@@ -113,6 +114,7 @@ class EditPost extends React.Component {
             <BiDotsHorizontalRounded />
           </IconContext.Provider>
         </div>
+        }
         <Modal
           show={this.state.showModal}
           onHide={() => this.setState({ showModal: false })}
