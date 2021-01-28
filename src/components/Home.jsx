@@ -7,12 +7,14 @@ import {
   Col,
   Card,
   Alert,
+  Form,
 } from "react-bootstrap";
 import { BiLike, BiCommentDetail, BiShare, BiSend } from "react-icons/bi";
 import EditPost from "./EditPost";
 import PostModal from "./PostModal";
 import RSidebar from "./RSidebar";
 import Sidebar from "./Sidebar";
+import Comment from './Comment'
 import "../styles/Home.css";
 export default class Home extends Component {
   state = {
@@ -86,7 +88,7 @@ export default class Home extends Component {
                   me={this.state.me}
                 />
                 {this.state.posts.map((post) => (
-                  <Card className="w-100 my-4" key={`feed${post._id}`}>
+                 <> <Card className="w-100 my-4" key={`feed${post._id}`}>
                     <Card.Header className="d-flex justify-content-between px-3">
                       <div>
                         <Image
@@ -111,9 +113,10 @@ export default class Home extends Component {
                       <Button variant="outline-dark mx-1">
                         <BiLike /> Like
                       </Button>
-                      <Button variant="outline-dark mx-1">
+                      <Button variant="outline-dark mx-1" onClick={()=> this.setState({newComment: true})}>
                         <BiCommentDetail /> Comment
                       </Button>
+                      
                       <Button variant="outline-dark mx-1">
                         <BiShare /> Share
                       </Button>
@@ -121,7 +124,9 @@ export default class Home extends Component {
                         <BiSend /> Send
                       </Button>
                     </Card.Footer>
+                    
                   </Card>
+                  <Comment/></>
                 ))}
               </Col>
               <Col className="d-none d-md-block" md={3}>

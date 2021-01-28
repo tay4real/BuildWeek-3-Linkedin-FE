@@ -1,9 +1,12 @@
 .homeDiv {
   background-color: #f3f2ef;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 .HomeCont {
   padding-top: 100px;
-  width: 800px;
+  width: 1200px;
 }
 .postImage {
   height: 300px;
