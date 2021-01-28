@@ -14,7 +14,7 @@ import EditPost from "./EditPost";
 import PostModal from "./PostModal";
 import RSidebar from "./RSidebar";
 import Sidebar from "./Sidebar";
-import Comment from './Comment'
+import Comment from "./Comment";
 import "../styles/Home.css";
 export default class Home extends Component {
   state = {
@@ -88,45 +88,69 @@ export default class Home extends Component {
                   me={this.state.me}
                 />
                 {this.state.posts.map((post) => (
-                 <> <Card className="w-100 my-4" key={`feed${post._id}`}>
-                    <Card.Header className="d-flex justify-content-between px-3">
-                      <div>
+                  <>
+                    {" "}
+                    <Card className="w-100 my-4" key={`feed${post._id}`}>
+                      <Card.Header className="d-flex justify-content-between px-3">
+                        <div>
+                          <Image
+                            src={post.profiles[0].image}
+                            className="postModalImg mr-3"
+                            roundedCircle
+                          />
+                          {post.profiles[0].name +
+                            " " +
+                            post.profiles[0].surname}
+                        </div>
+                        <EditPost
+                          post={post}
+                          refetch={() => this.fetchPost()}
+                        />
+                      </Card.Header>
+                      <Card.Text className="p-3">{post.text}</Card.Text>
+                      {post.postimageUrl && (
+                        <Card.Img
+                          src={post.postimageUrl}
+                          alt="PostImage"
+                          className="postImage"
+                        />
+                      )}
+
+                      <Card.Footer className="HomeModal bg-white">
+                        <Button variant="outline-dark mx-1">
+                          <BiLike /> Like
+                        </Button>
+                        <Button
+                          variant="outline-dark mx-1"
+                          onClick={() => this.setState({ newComment: true })}
+                        >
+                          <BiCommentDetail /> Comment
+                        </Button>
+
+                        <Button variant="outline-dark mx-1">
+                          <BiShare /> Share
+                        </Button>
+                        <Button variant="outline-dark mx-1">
+                          <BiSend /> Send
+                        </Button>
+                      </Card.Footer>
+                      <div className="d-flex px-3 justify-content-between align-items-center">
                         <Image
                           src={post.profiles[0].image}
-                          className="postModalImg mr-3"
+                          style={{ width: "30px", height: "30px" }}
+                          className="mr-3"
                           roundedCircle
                         />
-                        {post.profiles[0].name + " " + post.profiles[0].surname}
+                        <Comment className="flex-grow-1" />
                       </div>
-                      <EditPost post={post} refetch={() => this.fetchPost()} />
-                    </Card.Header>
-                    <Card.Text className="p-3">{post.text}</Card.Text>
-                    {post.postimageUrl && (
-                      <Card.Img
-                        src={post.postimageUrl}
-                        alt="PostImage"
-                        className="postImage"
-                      />
-                    )}
-                    
-                    <Card.Footer className="HomeModal bg-white">
-                      <Button variant="outline-dark mx-1">
-                        <BiLike /> Like
-                      </Button>
-                      <Button variant="outline-dark mx-1" onClick={()=> this.setState({newComment: true})}>
-                        <BiCommentDetail /> Comment
-                      </Button>
-                      
-                      <Button variant="outline-dark mx-1">
-                        <BiShare /> Share
-                      </Button>
-                      <Button variant="outline-dark mx-1">
-                        <BiSend /> Send
-                      </Button>
-                    </Card.Footer>
-                    
-                  </Card>
-                  <Comment/></>
+                      <div>
+                        {post.comments &&
+                          post.comments.map((comment) => {
+                            <div key={comment._id}>{comment.text}</div>;
+                          })}
+                      </div>
+                    </Card>
+                  </>
                 ))}
               </Col>
               <Col className="d-none d-md-block" md={3}>
