@@ -45,7 +45,7 @@ class PostModal extends React.Component {
     console.log(fd);
     try {
       const response = await fetch(
-        process.env.REACT_APP_BE_URL + `post/image/${postId}`,
+        process.env.REACT_APP_BE_URL + `post/${postId}/upload`,
         {
           method: "POST",
           body: fd,

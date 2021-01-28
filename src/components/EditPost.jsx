@@ -77,7 +77,7 @@ class EditPost extends React.Component {
     fd.append("post", this.state.postimage);
     try {
       const response = await fetch(
-        process.env.REACT_APP_BE_URL + `post/image/${this.props.post._id}`,
+        process.env.REACT_APP_BE_URL + `post/${this.props.post._id}/upload`,
         {
           method: "POST",
           body: fd,
