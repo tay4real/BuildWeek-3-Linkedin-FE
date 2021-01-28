@@ -6,16 +6,16 @@ import {
   Row,
   Col,
   Card,
-  Alert,
+  Alert
 } from "react-bootstrap";
-import { BiLike, BiCommentDetail, BiShare, BiSend } from "react-icons/bi";
-import { IoArrowRedoOutline } from "react-icons/io5";
-import { FiSend } from "react-icons/fi";
+import { BiLike, BiCommentDetail} from "react-icons/bi";
+import {IoArrowRedoOutline} from 'react-icons/io5'
+import {FiSend} from 'react-icons/fi'
 import EditPost from "./EditPost";
 import PostModal from "./PostModal";
 import RSidebar from "./RSidebar";
 import Sidebar from "./Sidebar";
-import Comment from "./Comment";
+import Comment from './Comment'
 import "../styles/Home.css";
 export default class Home extends Component {
   state = {
@@ -89,69 +89,47 @@ export default class Home extends Component {
                   me={this.state.me}
                 />
                 {this.state.posts.map((post) => (
-                  <>
-                    {" "}
-                    <Card className="w-100 my-4" key={`feed${post._id}`}>
-                      <Card.Header className="d-flex justify-content-between px-3">
-                        <div>
-                          <Image
-                            src={post.profiles[0].image}
-                            className="postModalImg mr-3"
-                            roundedCircle
-                          />
-                          {post.profiles[0].name +
-                            " " +
-                            post.profiles[0].surname}
-                        </div>
-                        <EditPost
-                          post={post}
-                          refetch={() => this.fetchPost()}
-                        />
-                      </Card.Header>
-                      <Card.Text className="p-3">{post.text}</Card.Text>
-                      {post.postimageUrl && (
-                        <Card.Img
-                          src={post.postimageUrl}
-                          alt="PostImage"
-                          className="postImage"
-                        />
-                      )}
-
-                      <Card.Footer className="HomeModal bg-white">
-                        <Button variant="outline-dark mx-1">
-                          <BiLike /> Like
-                        </Button>
-                        <Button
-                          variant="outline-dark mx-1"
-                          onClick={() => this.setState({ newComment: true })}
-                        >
-                          <BiCommentDetail /> Comment
-                        </Button>
-
-                        <Button variant="outline-dark mx-1">
-                          <BiShare /> Share
-                        </Button>
-                        <Button variant="outline-dark mx-1">
-                          <BiSend /> Send
-                        </Button>
-                      </Card.Footer>
-                      <div className="d-flex px-3 justify-content-between align-items-center">
+                 <> <Card className="w-100 my-4" key={`feed${post._id}`}>
+                    <Card.Header className="d-flex justify-content-between px-3">
+                      <div>
                         <Image
                           src={post.profiles[0].image}
-                          style={{ width: "30px", height: "30px" }}
-                          className="mr-3"
+                          className="postModalImg mr-3"
+                          style={{objectFit: 'cover'}}
                           roundedCircle
                         />
-                        <Comment className="flex-grow-1" />
+                        {post.profiles[0].name + " " + post.profiles[0].surname}
                       </div>
-                      <div>
-                        {post.comments &&
-                          post.comments.map((comment) => {
-                            <div key={comment._id}>{comment.text}</div>;
-                          })}
-                      </div>
-                    </Card>
-                  </>
+                      <EditPost post={post} refetch={() => this.fetchPost()} />
+                    </Card.Header>
+                    <Card.Text className="p-3">{post.text}</Card.Text>
+                    {post.postimageUrl && (
+                      <Card.Img
+                        src={post.postimageUrl}
+                        alt="PostImage"
+                        className="postImage"
+                        
+                      />
+                    )}
+                    
+                    <Card.Footer className="HomeModal bg-white">
+                      <Button variant="mx-1" style={{color: 'dimgrey'}}>
+                        <BiLike style={{width: '25px', height: '25px'}} /> Like
+                      </Button>
+                      <Button variant="mx-1" style={{color: 'dimgrey'}} onClick={()=> this.setState({newComment: true})}>
+                        <BiCommentDetail style={{width: '25px', height: '25px'}}/> Comment
+                      </Button>
+                      
+                      <Button variant="mx-1" style={{color: 'dimgrey'}}>
+                        <IoArrowRedoOutline style={{width: '25px', height: '25px'}}/> Share
+                      </Button>
+                      <Button variant="mx-1" style={{color: 'dimgrey'}}>
+                        <FiSend style={{width: '25px', height: '25px'}}/> Send
+                      </Button>
+                    </Card.Footer>
+                    
+                  </Card>
+                  <Comment/></>
                 ))}
               </Col>
               <Col className="d-none d-md-block" md={3}>
