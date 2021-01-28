@@ -8,34 +8,36 @@ export default class SignUp extends Component {
     user: [],
     hidden: true,
   };
-  
+
   addUser = async () => {
-    console.log(this.state.user)
-    try {let newUser = await fetch(process.env.REACT_APP_BE_URL + "profile", {
-      method: "POST", 
-      body: JSON.stringify(this.state.user),
-      headers: {
-        "Content-type": "application/json"
+    console.log(this.state.user);
+    try {
+      let newUser = await fetch(process.env.REACT_APP_BE_URL + "profile", {
+        method: "POST",
+        body: JSON.stringify(this.state.user),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      console.log(newUser);
+      if (newUser.statusText === "Internal Server Error") {
+        console.log("There is a problem with your application.");
+      } else if (newUser.statusText === "Created") {
+        let user = await newUser.json();
+        this.props.history.push(`/user/${user._id}`);
       }
-    })
-    console.log(newUser)
-    if (newUser.statusText === "Internal Server Error") {
-      console.log("There is a problem with your application.")
-    } else if (newUser.statusText === "Created") {
-      let user = await newUser.json()
-      this.props.history.push(`/user/${user._id}`)
+    } catch (error) {
+      console.log(error);
     }
-    } catch(error) {
-      console.log(error)
-    }
-    
-    
   };
   onChangeUserName = (e) => {
     this.setState({
-      user: { ...this.state.user, [e.target.id]: e.currentTarget.value.toLowerCase() },
+      user: {
+        ...this.state.user,
+        [e.target.id]: e.currentTarget.value.toLowerCase(),
+      },
     });
-  }
+  };
   onChangeHandler = (e) => {
     this.setState({
       user: { ...this.state.user, [e.target.id]: e.currentTarget.value },
@@ -70,98 +72,98 @@ export default class SignUp extends Component {
           <Col className="signupCol mt-5 signupBox">
             <div className="bg-white d-flex flex-column ">
               <Form>
-                <Form.Row className='center-form'>
-                <Form.Group className="mr-5">
-                  <Form.Label>Name </Form.Label>
-                  <Form.Control 
-                    required
-                    id="name"
-                    value={this.state.user.name}
-                    placeholder="Name"
-                    onKeyDown={(e) => this.handleLogin(e)}
-                    onChange={(e) => this.onChangeHandler(e)}
-                  />
-                </Form.Group>
-                <Form.Group className="">
-                  <Form.Label>Surname</Form.Label>
-                  <Form.Control 
-                    required
-                    id="surname"
-                    value={this.state.user.surname}
-                    placeholder="Surname"
-                    onKeyDown={(e) => this.handleLogin(e)}
-                    onChange={(e) => this.onChangeHandler(e)}
-                  />
-                </Form.Group>
+                <Form.Row className="center-form">
+                  <Form.Group className="mr-5">
+                    <Form.Label>Name </Form.Label>
+                    <Form.Control
+                      required
+                      id="name"
+                      value={this.state.user.name}
+                      placeholder="Name"
+                      onKeyDown={(e) => this.handleLogin(e)}
+                      onChange={(e) => this.onChangeHandler(e)}
+                    />
+                  </Form.Group>
+                  <Form.Group className="">
+                    <Form.Label>Surname</Form.Label>
+                    <Form.Control
+                      required
+                      id="surname"
+                      value={this.state.user.surname}
+                      placeholder="Surname"
+                      onKeyDown={(e) => this.handleLogin(e)}
+                      onChange={(e) => this.onChangeHandler(e)}
+                    />
+                  </Form.Group>
                 </Form.Row>
-                <Form.Row className='center-form'>
-                <Form.Group className="mr-5" >
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    required
-                    id="email"
-                    value={this.state.user.email}
-                    type="text"
-                    placeholder="Email"
-                    onKeyDown={(e) => this.handleLogin(e)}
-                    onChange={(e) => this.onChangeHandler(e)}
-                  />
-                </Form.Group>
-                <Form.Group  >
-                  <Form.Label>Username</Form.Label>
-                  <Form.Control
-                    required
-                    id="username"
-                    value={this.state.user.username}
-                    type="text"
-                    placeholder="username"
-                    onKeyDown={(e) => this.handleLogin(e)}
-                    onChange={(e) => this.onChangeUserName(e)}
-                  />
-                </Form.Group>
-                </Form.Row> 
-                <Form.Row className='center-form'>
-                <Form.Group className="w-75">
-                  <Form.Label>Bio</Form.Label>
-                  <Form.Control 
-                    required
-                    id="bio"
-                    as='textarea'
-                    rows={6}
-                    value={this.state.user.bio}
-                    placeholder="Write something about you..."
-                    onKeyDown={(e) => this.handleLogin(e)}
-                    onChange={(e) => this.onChangeHandler(e)}
-                  />
-                </Form.Group>
+                <Form.Row className="center-form">
+                  <Form.Group className="mr-5">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      required
+                      id="email"
+                      value={this.state.user.email}
+                      type="text"
+                      placeholder="Email"
+                      onKeyDown={(e) => this.handleLogin(e)}
+                      onChange={(e) => this.onChangeHandler(e)}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control
+                      required
+                      id="username"
+                      value={this.state.user.username}
+                      type="text"
+                      placeholder="username"
+                      onKeyDown={(e) => this.handleLogin(e)}
+                      onChange={(e) => this.onChangeUserName(e)}
+                    />
+                  </Form.Group>
                 </Form.Row>
-                <Form.Row className='center-form'>
-                <Form.Group className="w-75">
-                  <Form.Label>Current title</Form.Label>
-                  <Form.Control 
-                    required
-                    id="title"
-                    rows={6}
-                    value={this.state.user.title}
-                    placeholder="What are you currently doing?"
-                    onKeyDown={(e) => this.handleLogin(e)}
-                    onChange={(e) => this.onChangeHandler(e)}
-                  />
-                </Form.Group>
+                <Form.Row className="center-form">
+                  <Form.Group className="w-75">
+                    <Form.Label>Bio</Form.Label>
+                    <Form.Control
+                      required
+                      id="bio"
+                      as="textarea"
+                      rows={6}
+                      value={this.state.user.bio}
+                      placeholder="Write something about you..."
+                      onKeyDown={(e) => this.handleLogin(e)}
+                      onChange={(e) => this.onChangeHandler(e)}
+                    />
+                  </Form.Group>
                 </Form.Row>
-                <Form.Row className='center-form'>
-                <Form.Group className="w-75">
-                  <Form.Label>Location</Form.Label>
-                  <Form.Control 
-                    required
-                    id="area"
-                    rows={6}
-                    value={this.state.user.area}
-                    placeholder="Where do you live?"
-                    onKeyDown={(e) => this.handleLogin(e)}
-                    onChange={(e) => this.onChangeHandler(e)}
-                  />
-                </Form.Group>
+                <Form.Row className="center-form">
+                  <Form.Group className="w-75">
+                    <Form.Label>Current title</Form.Label>
+                    <Form.Control
+                      required
+                      id="title"
+                      rows={6}
+                      value={this.state.user.title}
+                      placeholder="What are you currently doing?"
+                      onKeyDown={(e) => this.handleLogin(e)}
+                      onChange={(e) => this.onChangeHandler(e)}
+                    />
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row className="center-form">
+                  <Form.Group className="w-75">
+                    <Form.Label>Location</Form.Label>
+                    <Form.Control
+                      required
+                      id="area"
+                      rows={6}
+                      value={this.state.user.area}
+                      placeholder="Where do you live?"
+                      onKeyDown={(e) => this.handleLogin(e)}
+                      onChange={(e) => this.onChangeHandler(e)}
+                    />
+                  </Form.Group>
                 </Form.Row>
               </Form>
               <span>
@@ -171,7 +173,9 @@ export default class SignUp extends Component {
               </span>
               <Col className="signupCol px-0">
                 {/* <Button className="signupBtn" > */}
-                <Button className="signupBtn" onClick={() => this.addUser()}>Agree & Join</Button>
+                <Button className="signupBtn" onClick={() => this.addUser()}>
+                  Agree & Join
+                </Button>
               </Col>
             </div>
             <Row className="d-flex justify-content-around mt-4 mx-auto ">

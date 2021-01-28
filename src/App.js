@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, withRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./components/Home";
 import AppNavBar from "./components/AppNavBar";
 import Footer from "./components/Footer";
@@ -7,7 +7,6 @@ import Profile from "./components/ProfileBody";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import { useState } from "react";
-// import PostModal from "./components/PostModal";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App(props) {
@@ -29,13 +28,14 @@ function App(props) {
         <AppNavBar query={query} searchHandler={searchHandler} />{" "}
       </Route>
       <Route exact path={"/home"}>
-        <Home title="Home page"/>{" "}
+        <Home title="Home page" />{" "}
       </Route>
       <Route path={"/user/:id"}>
         <Profile logged={user} />
       </Route>
+
       <Route exact path={"/"}>
-        <Login account={getAccount}/>{" "}
+        <Login account={getAccount} />{" "}
       </Route>
       <Route path={"/signup"}>
         <SignUp />
