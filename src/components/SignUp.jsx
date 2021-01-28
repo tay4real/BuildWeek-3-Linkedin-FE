@@ -36,6 +36,10 @@ class SignUp extends React.Component {
       console.log("There is a problem with your application.")
     } else if (newUser.statusText === "Created") {
       let user = await newUser.json()
+      localStorage.setItem(
+        "logged",
+        await JSON.stringify(this.state.loggedWith)
+      );
       this.props.history.push(`/`)
     }
     } catch(error) {
