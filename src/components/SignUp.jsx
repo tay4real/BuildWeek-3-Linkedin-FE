@@ -67,7 +67,15 @@ class SignUp extends React.Component {
               alt="logo"
               style={{ height: "30px" }}
             />
-            <h3>Make the most of your professional life</h3>
+            <h3
+              style={{
+                fontFamily: "fantasy",
+                fontWeight: "bold",
+                fontStyle: "oblique",
+              }}
+            >
+              Make the most of your professional life
+            </h3>
           </Col>
           <Col className="signupCol mt-5 mb-2 signupBox">
             <div className="bg-white d-flex flex-column ">
