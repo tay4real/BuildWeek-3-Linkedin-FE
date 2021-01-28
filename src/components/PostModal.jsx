@@ -14,6 +14,8 @@ class PostModal extends React.Component {
     imgSubmitStatus: "secondary",
     post: {
       text: "",
+      username: "",
+      profiles: "",
     },
   };
 
@@ -39,7 +41,7 @@ class PostModal extends React.Component {
 
   fileUploadHandler = async (postId) => {
     const fd = new FormData();
-    fd.append("post", this.state.postimage);
+    fd.append("postimage", this.state.postimage);
     console.log(fd);
     try {
       const response = await fetch(
@@ -66,20 +68,24 @@ class PostModal extends React.Component {
 
   post = async () => {
     try {
+      const postData = this.state.post;
+      postData.username = this.props.me.username;
+      postData.profiles = this.props.me._id;
       const response = await fetch(process.env.REACT_APP_BE_URL + `post`, {
         method: "POST",
-        body: JSON.stringify(this.state.post),
+        body: JSON.stringify(postData),
         headers: new Headers({
           "Content-Type": "application/json",
         }),
       });
+      console.log(this.props.me.username);
       console.log(response);
-      console.log(JSON.stringify(this.state.post));
+      console.log(JSON.stringify(postData));
       if (response.ok) {
         const data = await response.json();
 
         console.log(data);
-        //this.fileUploadHandler(data);
+        this.fileUploadHandler(data);
 
         this.setState({ showModal: false }, () => this.props.refetch());
       } else {
