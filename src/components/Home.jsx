@@ -31,9 +31,10 @@ export default class Home extends Component {
       let response = await fetch(process.env.REACT_APP_BE_URL + "post");
       if (response.ok) {
         let postResponse = await response.json();
+        const posts = postResponse.posts;
+        console.log(posts);
 
-        console.log(postResponse.posts);
-        this.setState({ posts: postResponse.posts, loading: false });
+        this.setState({ posts: posts.reverse(), loading: false });
       }
     } catch (error) {
       console.log(error);
@@ -52,10 +53,6 @@ export default class Home extends Component {
         { me: await JSON.parse(localStorage.getItem("logged")) },
         () => console.log(this.state.me)
       );
-      // let response = await fetch(process.env.REACT_APP_BE_URL + "profile");
-      // const meResponse = await response.json();
-      // console.log(meResponse);
-      // this.setState({ me: meResponse });
     } catch (error) {
       console.log(error);
     }
