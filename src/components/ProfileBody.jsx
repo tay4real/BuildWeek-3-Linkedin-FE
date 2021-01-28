@@ -46,7 +46,7 @@ class Body extends React.Component {
   };
   searchProfile = async(id) => {
     let response = await fetch(
-      process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
+      process.env.REACT_APP_BE_URL + "profile/" + id
     );
     let profile = await response.json();
     this.setState({ profile: profile, loading: false });
