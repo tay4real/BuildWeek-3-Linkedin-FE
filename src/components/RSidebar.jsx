@@ -12,7 +12,7 @@ class RSidebar extends React.Component {
     this.props.history.push("/");
   };
   componentDidMount = async() => {
-    this.setState({user: localStorage.getItem("logged")}, ()=> console.log(this.state.user))
+    this.setState({user: JSON.parse(localStorage.getItem('logged'))}, ()=> console.log(this.state.user))
 
   }
   render() {
