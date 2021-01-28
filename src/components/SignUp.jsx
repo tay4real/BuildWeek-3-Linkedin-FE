@@ -180,10 +180,11 @@ class SignUp extends React.Component {
                 <a>Cookie Policy</a>.
               </span>
               <Col className="signupCol px-0">
-                {/* <Button className="signupBtn" > */}
+                <Link to='/'>
                 <Button className="signupBtn" onClick={() => this.addUser()}>
                   Agree & Join
                 </Button>
+                </Link>
               </Col>
             </div>
             <Row className="d-flex justify-content-around mt-4 mx-auto ">
