@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, ListGroup, ListGroupItem, Button } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
-import Placeholder from '../assets/linkedin-logo.png'
 
 class RSidebar extends React.Component {
   state = {
@@ -11,10 +10,6 @@ class RSidebar extends React.Component {
     localStorage.clear();
     this.props.history.push("/");
   };
-  componentDidMount = async() => {
-    this.setState({user: JSON.parse(localStorage.getItem('logged'))}, ()=> console.log(this.state.user))
-
-  }
   render() {
     return (
       <>
@@ -32,7 +27,7 @@ class RSidebar extends React.Component {
             <div>
               <div style={{ marginTop: "-130px" }}>
                 <img
-                  src={ this.state.user.image ? this.state.user.image : Placeholder}
+                  src={this.props.me.image}
                   alt="placeholder"
                   height="120px"
                   width="120px"
