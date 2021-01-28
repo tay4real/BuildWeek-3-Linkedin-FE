@@ -93,7 +93,10 @@ class RSidebar extends React.Component {
               My Items
             </ListGroupItem>
             <ListGroupItem onClick={() => this.logout()}>
-              <button className="logoutbtn">Logout</button>
+              <button className="logoutbtn" onClick={()=> {
+                localStorage.clear()
+                this.props.history.push('/')
+              } }>Logout</button>
             </ListGroupItem>
           </ListGroup>
         </Card>
