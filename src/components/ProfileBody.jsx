@@ -149,7 +149,7 @@ class Body extends React.Component {
                               <button className="btnMore">More...</button>
                               <EditPage
                                 profile={this.state.profile}
-                                logged = {this.state.logged}
+                                logged = {this.state.logged._id}
                                 refetch={() =>
                                   this.searchProfile(this.props.match.params.id)
                                 }
@@ -167,11 +167,11 @@ class Body extends React.Component {
                   profile={this.state.profile}
                   refetch={() => this.searchProfile(this.props.match.params.id)}
                 />
-                <Route path={"/user/"+this.state.logged}>
+                <Route path={"/user/"+this.state.logged._id}>
                   {" "}
                   <Feature />{" "}
                 </Route>
-                <Experience profile={this.state.profile} logged={this.state.logged} />
+                <Experience profile={this.state.profile} logged={this.state.logged._id} />
               </Col>
               <Col
                 md={4}
