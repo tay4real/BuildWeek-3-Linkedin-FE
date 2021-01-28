@@ -18,7 +18,7 @@ class Edit extends React.Component {
     try {
       if (this.props.expId !== null) {
         const response = await fetch(
-          `${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`
+          `${process.env.REACT_APP_BE_URL}experience/experiences/${this.state.expId}`
         );
         const data = await response.json();
         if (response.ok) {
