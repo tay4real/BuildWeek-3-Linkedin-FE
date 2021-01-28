@@ -26,7 +26,7 @@ class SignUp extends React.Component {
         let user = await newUser.json();
         localStorage.setItem(
           "logged",
-          await JSON.stringify(this.state.user)
+          await JSON.stringify(user)
         );
         this.props.history.push(`/user/${user._id}`);
       }
@@ -36,10 +36,10 @@ class SignUp extends React.Component {
       console.log("There is a problem with your application.")
     } else if (newUser.statusText === "Created") {
       let user = await newUser.json()
-      localStorage.setItem(
-        "logged",
-        await JSON.stringify(user)
-      );
+      // localStorage.setItem(
+      //   "logged",
+      //   await JSON.stringify(user)
+      // );
       this.props.history.push(`/`)
     }
     } catch(error) {
