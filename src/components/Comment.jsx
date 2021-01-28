@@ -6,12 +6,16 @@ import { Form } from "react-bootstrap";
 class Comment extends React.Component {
   render() {
     return (
-        <Form>
-            <Form.Group className="comment-wrap">
-                
-                <Form.Control as='textarea' placeholder='Add a comment'/>
-            </Form.Group>
-        </Form>
+      <Form className={this.props.className}>
+        <Form.Group className="comment-wrap">
+          <Form.Control
+            as="textarea"
+            style={{ borderRadius: "20px" }}
+            rows={1}
+            placeholder="Add a comment"
+          />
+        </Form.Group>
+      </Form>
     );
   }
 }
