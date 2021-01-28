@@ -98,6 +98,7 @@ export default class Home extends Component {
                       </div>
                       <EditPost post={post} refetch={() => this.fetchPost()} />
                     </Card.Header>
+                    <Card.Text className="p-3">{post.text}</Card.Text>
                     {post.postimageUrl && (
                       <Card.Img
                         src={post.postimageUrl}
@@ -105,7 +106,7 @@ export default class Home extends Component {
                         className="postImage"
                       />
                     )}
-                    <Card.Text className="p-3">{post.text}</Card.Text>
+                    
                     <Card.Footer className="HomeModal bg-white">
                       <Button variant="outline-dark mx-1">
                         <BiLike /> Like
