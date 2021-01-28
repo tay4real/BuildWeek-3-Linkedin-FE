@@ -4,7 +4,6 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import { IconContext } from "react-icons";
 import { BiPencil } from "react-icons/bi";
 import { BsPlus } from "react-icons/bs";
-import Job from "../assets/job.png";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Route } from "react-router-dom";
 import moment from "moment";

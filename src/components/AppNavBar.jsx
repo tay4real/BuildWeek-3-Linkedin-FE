@@ -17,7 +17,6 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 import { BsPeopleFill, BsGrid3X3Gap, BsCollectionPlay } from "react-icons/bs";
-import { GiHandBag } from "react-icons/gi";
 import {AiFillHome} from "react-icons/ai"
 import { BsFillChatDotsFill } from "react-icons/bs";
 import "../styles/AppNavBar.css";
