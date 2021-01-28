@@ -1,9 +1,7 @@
 import React from "react";
 import {
   Col,
-  Container,
   Row,
-  Spinner,
   Alert,
   Card,
   Dropdown,
@@ -15,9 +13,7 @@ import Feature from "./Featured";
 import Sidebar from "./Sidebar";
 import EditPage from "./EditPage";
 import "../styles/Profile.css";
-import { BiPencil } from "react-icons/bi";
-import { IconContext } from "react-icons";
-import { Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 class Body extends React.Component {
   state = {
     profile: {},
@@ -26,41 +22,35 @@ class Body extends React.Component {
     errType: null,
     errMsg: "",
     loading: true,
+    logged: ""
   };
-  searchProfile = (id) => {
-    fetch("https://striveschool-api.herokuapp.com/api/profile/" + id, {
-      method: "GET",
-      headers: new Headers({
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        ContentType: "application/json",
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-      })
-      .then((info) => {
-        let profile = { ...info };
-        console.log(profile);
-        this.setState({ profile: profile, loading: false });
-      })
-      .catch((error) => {
-        console.log(error);
-        this.setState({
-          loading: false,
-          err: true,
-          errType: "danger",
-          errMsg: error.messasge,
-        });
-      });
-  };
+  
   componentDidMount = async () => {
-    await fetch(process.env.REACT_APP_BE_URL + this.props.match.params.id)
+    this.setState({logged: await JSON.parse(localStorage.getItem('logged'))}, ()=> console.log(this.state.logged))
+    let response = await fetch(
+      process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
+    );
+    let profile = await response.json();
+    this.setState({ profile: profile, loading: false });
   };
-  componentDidUpdate = async() => {
-    await fetch(process.env.REACT_APP_BE_URL + this.props.match.params.id)
+  componentDidUpdate = async (prevProps) => {
+    if (prevProps.match.params.id !== this.props.match.params.id) {
+      let response = await fetch(
+        process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
+      );
+      let profile = await response.json();
+      this.setState({ profile: profile, loading: false });
+    }
+    
   };
+  searchProfile = async(id) => {
+    let response = await fetch(
+      process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
+    );
+    let profile = await response.json();
+    this.setState({ profile: profile, loading: false });
+  }
+
   render() {
     return (
       <div className="bgBody">
@@ -69,16 +59,17 @@ class Body extends React.Component {
             <Alert variant="danger">{this.state.errMsg}</Alert>
           )}
           {this.state.loading && this.state.err !== true ? (
-            <div className='loader-wrap'>  <div className="lds-roller">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
+            <div className="loader-wrap">
+            <div className="lds-roller">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
           </div>
           ) : Object.keys(this.state.profile).length !== 0 ? (
             <Row className="rowm">
@@ -143,7 +134,7 @@ class Body extends React.Component {
                         </Col>
                         <Col lg={6}>
                           <div className="btnBox">
-                            <Route path="/user/me">
+                            <Route path={"/user/"+this.state.logged._id}>
                               {" "}
                               <DropdownButton
                                 className="d-none d-lg-block"
@@ -167,8 +158,9 @@ class Body extends React.Component {
                               <button className="btnMore">More...</button>
                               <EditPage
                                 profile={this.state.profile}
+                                logged = {this.state.logged._id}
                                 refetch={() =>
-                                  this.searchProfile(this.props.match.params.id)
+                                  this.searchProfile(this.state.profile._id)
                                 }
                                 color="#0A66CE"
                               />
@@ -182,13 +174,13 @@ class Body extends React.Component {
                 <Bio
                   bio={this.state.profile.bio}
                   profile={this.state.profile}
-                  refetch={() => this.searchProfile(this.props.match.params.id)}
+                  refetch={() => this.searchProfile(this.state.profile._id)}
                 />
-                <Route path="/user/me">
+                <Route path={"/user/"+this.state.logged._id}>
                   {" "}
                   <Feature />{" "}
                 </Route>
-                <Experience profile={this.state.profile} />
+                <Experience profile={this.state.profile} logged={this.state.logged._id} />
               </Col>
               <Col
                 md={4}
@@ -210,4 +202,4 @@ class Body extends React.Component {
     );
   }
 }
-export default Body;
+export default withRouter(Body);

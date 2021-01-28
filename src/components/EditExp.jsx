@@ -7,6 +7,7 @@ import "../styles/Profile.css";
 class Edit extends React.Component {
   state = {
     showModal: false,
+    expId: '',
     experience: {},
     selectedFile: null,
     imgSubmitStatus: "secondary",
@@ -17,7 +18,7 @@ class Edit extends React.Component {
     try {
       if (this.props.expId !== null) {
         const response = await fetch(
-          `${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`
+          `${process.env.REACT_APP_BE_URL}experience/experiences/${this.state.expId}`
         );
         const data = await response.json();
         if (response.ok) {
@@ -44,21 +45,21 @@ class Edit extends React.Component {
   submitData = async (str) => {
     const url =
       str === "POST"
-        ? `${process.env.REACT_APP_BE_URL}${this.props.userId}/experiences`
-        : `${this.url}${this.props.userId}/experiences/${this.props.expId}`;
+        ? `${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`
+        : `${process.env.REACT_APP_BE_URL}experience/${this.state.expId}`;
     const payload = {...this.state.experience, profiles: this.state.profile._id
     };
     console.log("PREPARED: ", payload);
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`,
+        url,
         {
           method: str,
-          body: {...payload, profiles: this.state.profile._id
-          },
-          headers: { 
+          body: JSON.stringify({...payload, profiles: this.state.profile._id
+          }),
+          headers: new Headers( { 
             "Content-Type": "application/json"
-          }
+          })
         }, 
       );
       if (response.ok) {
@@ -68,11 +69,12 @@ class Edit extends React.Component {
         } else {
           this.props.toggle();
           this.props.refetch();
+          
         }
       } else {
         throw new Error("Internal Server Error");
       }
-      // this.fetchExp();
+      
     } catch (e) {
       console.log("There was a problem:", e);
     }
@@ -83,11 +85,13 @@ class Edit extends React.Component {
       : this.submitData("DELETE");
   };
   componentDidMount = () => {
+    this.setState({expId: this.props.expId}, ()=> console.log(this.state.expId))
     this.fetchExp();
   };
-  componentDidUpdate(prevProps) {
+  componentDidUpdate = async(prevProps) => {
     if (prevProps.expId !== this.props.expId) {
       if (this.edit()) {
+        await this.setState({expId: this.props.expId}, ()=> console.log(this.state.expId)) //why does it say await doesn't have an effect when it clearly has? 
         this.fetchExp();
       } else {
         this.setState({ experience: { empty: true } });

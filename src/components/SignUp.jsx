@@ -1,17 +1,14 @@
 import React, { Component } from "react";
 import { Row, Col, Form, Button, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import FooterLogo from "../footer_logo.svg";
 import "../styles/SignUp.css";
-export default class SignUp extends Component {
+class SignUp extends React.Component {
   state = {
     user: [],
     hidden: true,
   };
-  url = "https://striveschool-api.herokuapp.com/api/account/register";
-  header = {
-    ContentType: "application/json",
-  };
+  
   addUser = async () => {
     console.log(this.state.user)
     try {let newUser = await fetch(process.env.REACT_APP_BE_URL + "profile", {
@@ -26,7 +23,7 @@ export default class SignUp extends Component {
       console.log("There is a problem with your application.")
     } else if (newUser.statusText === "Created") {
       let user = await newUser.json()
-      this.props.history.push(`/user/${user._id}`)
+      this.props.history.push(`/`)
     }
     } catch(error) {
       console.log(error)
@@ -152,6 +149,20 @@ export default class SignUp extends Component {
                   />
                 </Form.Group>
                 </Form.Row>
+                <Form.Row className='center-form'>
+                <Form.Group className="w-75">
+                  <Form.Label>Location</Form.Label>
+                  <Form.Control 
+                    required
+                    id="area"
+                    rows={6}
+                    value={this.state.user.area}
+                    placeholder="Where do you live?"
+                    onKeyDown={(e) => this.handleLogin(e)}
+                    onChange={(e) => this.onChangeHandler(e)}
+                  />
+                </Form.Group>
+                </Form.Row>
               </Form>
               <span>
                 By clicking Agree & Join, you agree to the LinkedIn{" "}
@@ -165,7 +176,7 @@ export default class SignUp extends Component {
             </div>
             <Row className="d-flex justify-content-around mt-4 mx-auto ">
               Already on LinkedIn?{" "}
-              <Link className="ml-1" to="/login">
+              <Link className="ml-1" to="/">
                 {" "}
                 Sign in
               </Link>
@@ -176,3 +187,4 @@ export default class SignUp extends Component {
     );
   }
 }
+export default withRouter(SignUp)

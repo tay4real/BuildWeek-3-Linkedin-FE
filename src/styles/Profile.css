@@ -33,7 +33,7 @@
 .usrnTxt {
   font-size: 1.45rem;
   line-height: 1.33333;
-  font-family: "Roboto", sans-serif;
+  font-family: "Futura", sans-serif;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.9);
 }
@@ -41,14 +41,14 @@
 .roletext {
   font-size: 1.2rem;
   line-height: 1.33333;
-  font-family: "Roboto", sans-serif;
+  font-family: "Futura", sans-serif;
   font-weight: 300;
 }
 
 .areaTxt {
   font-size: 1rem;
   font-weight: 300 !important;
-  font-family: "Roboto", sans-serif;
+  font-family: "Futura", sans-serif;
   color: rgba(0, 0, 0, 0.9);
   margin-top: 9px;
 }
@@ -90,13 +90,15 @@ a {
 .info {
   font-size: 1.3rem;
   line-height: 1.33333;
-  font-family: "Roboto", sans-serif;
+  font-family: "Futura", sans-serif;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.9);
   padding-top: 10px;
   padding-bottom: 1vw;
 }
 .loader-wrap {
+  width: 100%;
+  height: 400px;
   display: flex;
   flex-direction: row;
   justify-content: center;
