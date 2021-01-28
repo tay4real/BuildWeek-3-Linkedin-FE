@@ -109,17 +109,17 @@ class Edit extends React.Component {
 
   fileUploadHandler = async () => {
     const fd = new FormData();
-    fd.append("experience", this.state.selectedFile);
+    fd.append("image", this.state.selectedFile);
     try {
       const response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${this.props.userId}/experiences/${this.props.expId}/picture`,
+        `${process.env.REACT_APP_BE_URL}experience/upload/${this.state.expId}`,
         {
           method: "POST",
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
           body: fd,
         }
       );
       if (response.ok) {
+        console.log("SENT IMAGE: ", fd)
         this.props.toggle();
         this.props.refetch();
       } else {

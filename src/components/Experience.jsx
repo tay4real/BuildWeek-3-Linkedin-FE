@@ -201,10 +201,10 @@ class Experience extends React.Component {
                                 {...provided.dragHandleProps}
                               >
                                 <Row noGutters>
-                                  <div style={{ width: "48px" }}>
+                                  <div style={{ width: "80px", border: 'none' }}>
                                     <img
-                                      src={exp.image && exp.image}
-                                      style={{ width: "48px" }}
+                                      src={exp.image ? exp.image: 'https://placehold.it/80x80'}
+                                      style={{ width: "80px", height: "80px", objectFit: 'cover', border: 'none' }}
                                     />
                                   </div>
                                   <Col>
