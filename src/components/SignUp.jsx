@@ -38,7 +38,7 @@ class SignUp extends React.Component {
       let user = await newUser.json()
       localStorage.setItem(
         "logged",
-        await JSON.stringify(this.state.loggedWith)
+        await JSON.stringify(user)
       );
       this.props.history.push(`/`)
     }
