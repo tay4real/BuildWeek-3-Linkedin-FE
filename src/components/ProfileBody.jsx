@@ -12,6 +12,7 @@ import Experience from "./Experience";
 import Sidebar from "./Sidebar";
 import EditPage from "./EditPage";
 import "../styles/Profile.css";
+import Placeholder from "../assets/linkedin-logo.png"
 import { Route, withRouter } from "react-router-dom";
 class Body extends React.Component {
   state = {
@@ -87,7 +88,7 @@ class Body extends React.Component {
                     <div className="d-flex justify-content-between">
                       <div style={{ marginTop: "-130px" }}>
                         <img
-                          src={this.state.profile.image}
+                          src={this.state.profile.image ? this.state.profile.image : Placeholder }
                           alt="placeholder"
                           height="160px"
                           width="160px"
