@@ -200,14 +200,14 @@ class Experience extends React.Component {
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                               >
-                                <Row noGutters>
-                                  <div style={{ width: "80px", border: 'none' }}>
+                                <div className='exps'>
+                                  <div style={{ width: "80px", border: 'none', display: 'flex', flexDirection: "column", justifyContent: 'center' }}>
                                     <img
                                       src={exp.image ? exp.image: 'https://placehold.it/80x80'}
                                       style={{ width: "80px", height: "80px", objectFit: 'cover', border: 'none' }}
                                     />
                                   </div>
-                                  <Col>
+                                  <div className='exp-item' >
                                     <ul
                                       id={this.state.user._id}
                                       key={`exp${index}`}
@@ -224,7 +224,7 @@ class Experience extends React.Component {
                                           <IconContext.Provider
                                             value={{
                                               size: "24px",
-                                              className: "expIcons",
+                                              className: "expIcons ",
                                               color: "#0A66CE",
                                             }}
                                           >
@@ -264,8 +264,8 @@ class Experience extends React.Component {
                                         </div>
                                       </li>
                                     </ul>
-                                  </Col>
-                                </Row>
+                                  </div>
+                                </div>
                               </div>
                             )}
                           </Draggable>

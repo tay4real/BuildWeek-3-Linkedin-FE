@@ -7,8 +7,9 @@
 }
 .editBtnExp {
   position: absolute;
-  left: 94%;
+  left: 93%;
   margin-top: -0.5vw;
+  padding-right: 10px;
 }
 
 .roleExp {
@@ -29,11 +30,30 @@
 .descExp {
   padding-top: 0.2vw;
   font-size: 0.9rem;
+  width: 620px;
+  overflow: hidden;
+  white-space: nowrap;
+ text-overflow: ellipsis!important;
 }
 
 .bio .cardProf {
   border-radius: 8px;
   margin-top: 32px !important;
+}
+
+.exps{ 
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center ;
+}
+
+.exp-item {
+ display: flex;
+ flex-direction: row;
+ justify-content: flex-start;
+ align-items: center;
+ 
 }
 
 /*loader*/
