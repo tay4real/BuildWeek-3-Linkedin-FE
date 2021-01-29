@@ -63,6 +63,7 @@ class Experience extends React.Component {
   };
 
   componentDidMount = async () => {
+    console.log(`${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`)
     this.setState(
       { logged: await JSON.parse(localStorage.getItem("logged")) },
       () => console.log(this.state.logged)
@@ -132,6 +133,7 @@ class Experience extends React.Component {
     await fetch(
       `${process.env.REACT_APP_BE_URL}experience/${this.state.profile.username}`
     )
+    
       .then((response) => response.json())
       .then((experience) => {
         console.table(experience);
@@ -187,7 +189,7 @@ class Experience extends React.Component {
                 <Droppable droppableId="droppable">
                   {(provided, snapshot) => (
                     <div {...provided.droppableProps} ref={provided.innerRef}>
-                      {this.state.experience.length > 1 ? (
+                      {this.state.experience.length > 0 ? (
                         this.state.experience.map((exp, index) => (
                           <Draggable
                             key={exp._id}

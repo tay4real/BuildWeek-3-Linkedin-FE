@@ -27,7 +27,7 @@ class RSidebar extends React.Component {
             <div>
               <div style={{ marginTop: "-130px" }}>
                 <img
-                  src={this.props.me.image}
+                  src={this.props.me.image ? this.props.me.image : 'https://placehold.it/100x100'}
                   alt="placeholder"
                   height="120px"
                   width="120px"

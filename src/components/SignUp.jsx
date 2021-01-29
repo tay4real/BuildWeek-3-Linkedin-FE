@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { Row, Col, Form, Button, Container } from "react-bootstrap";
 import { Link, withRouter } from "react-router-dom";
 import FooterLogo from "../footer_logo.svg";
@@ -24,6 +24,19 @@ class SignUp extends React.Component {
         console.log("There is a problem with your application.");
       } else if (newUser.statusText === "Created") {
         let user = await newUser.json();
+        localStorage.setItem("logged", await JSON.stringify(user));
+        this.props.history.push(`/user/${user._id}`);
+      }
+
+      console.log(newUser);
+      if (newUser.statusText === "Internal Server Error") {
+        console.log("There is a problem with your application.");
+      } else if (newUser.statusText === "Created") {
+        let user = await newUser.json();
+        // localStorage.setItem(
+        //   "logged",
+        //   await JSON.stringify(user)
+        // );
         this.props.history.push(`/`);
       }
     } catch (error) {

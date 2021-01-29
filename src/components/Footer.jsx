@@ -1,12 +1,30 @@
 import React from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import {Link} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 import { IconContext } from "react-icons";
 import { FaQuestionCircle } from "react-icons/fa";
 import { BsFillGearFill } from "react-icons/bs";
 import FooterLogo from "../footer_logo.svg";
 import "../styles/Footer.css";
 class footer extends React.Component {
+
+ /* getCV = async() => {
+    let username = profile.username
+    this.setState({username: username})
+  }*/
+
+  state = {
+    username: ""
+  }
+
+  componentDidMount = async () => {
+    let data = await fetch(process.env.REACT_APP_BE_URL + `profile/${this.props.match.params.id}`)
+    let username = ( await data.json()).username
+
+    console.log(username)
+    this.setState({username: username})
+  }
+
   render() {
     return (
       <Container id="footer" fluid>
@@ -49,6 +67,15 @@ class footer extends React.Component {
                     Marketing Solutions <br />
                     Advertising <br />
                     Small Business <br />
+                  { this.state.username &&
+                  <>
+                  <a href={process.env.REACT_APP_BE_URL + `experience/${this.state.username}/experiences/CSV`} > Get your CSV</a> <br/>
+                  <a href={process.env.REACT_APP_BE_URL + `profile/${this.props.match.params.id}/CV`} target="_blank"> Get your PDF</a>
+                  </>
+                  }
+                  
+                    
+
                   </p>
                 </Col>
               </Row>
@@ -82,6 +109,7 @@ class footer extends React.Component {
                     <div className="ml-2">
                       <h6>Manage your account and privacy</h6>
                       <span>Go to your Settings.</span>
+                      
                     </div>
                     
                   </Row>
@@ -110,4 +138,4 @@ class footer extends React.Component {
     );
   }
 }
-export default footer;
+export default withRouter(footer);

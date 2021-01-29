@@ -7,6 +7,9 @@ import {
   InputGroup,
   Col,
 } from "react-bootstrap";
+
+import { Autocomplete } from "@material-ui/lab";
+import { TextField } from "@material-ui/core";
 import { withRouter, Link } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { MdWork } from "react-icons/md";
@@ -19,11 +22,38 @@ import "../styles/AppNavBar.css";
 class AppNavBar extends React.Component {
   state = {
     user: "",
+    query: "",
+    results: "",
+    profiles: [],
   };
   componentDidMount = async () => {
     let user = await JSON.parse(localStorage.getItem("logged"));
-    this.setState({ user: user._id }, () => console.log(this.state.user));
+    let response = await fetch(process.env.REACT_APP_BE_URL + `profile`);
+    let profiles = await response.json();
+    this.setState({ user: user._id, profiles: profiles }, () => console.log(this.state));
   };
+
+  goToProfile = async(e) => { 
+   e.target.value += ''
+    if(e.keyCode === 13) {
+      e.preventDefault();
+    let query = e.target.value;
+    let result = this.state.profiles.filter((prof) => {
+     return prof.name.toLowerCase() === query.toLowerCase(); //is prof an array?
+    });
+    await this.setState({ results: result }, ()=> console.log(this.state.results));
+    console.log(this.state.results[0]._id)
+    this.props.history.push(`/user/${this.state.results[0]._id}`)
+    }
+    
+  };
+
+  getData = async() => {
+    let response = await fetch(process.env.REACT_APP_BE_URL + `profile`);
+    let profiles = await response.json();
+    this.setState({ profiles: profiles }, () => console.log(this.state.profiles));
+  }
+
   render() {
     return (
       <Navbar bg="white" variant="light" className="py-0 fixed-top">
@@ -45,30 +75,20 @@ class AppNavBar extends React.Component {
             </IconContext.Provider>
           </Navbar.Brand>
           <Form inline className="navSearch">
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text>
-                  <IconContext.Provider
-                    value={{
-                      size: "15",
-                      className: "SearchIcon",
-                      color: "grey",
-                      backgroundColor: "#60627c",
-                    }}
-                  >
-                    <FaSearch />
-                  </IconContext.Provider>
-                </InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                value={this.props.query}
-                type="text"
-                placeholder="Search"
-                className=""
-                onChange={(e) => this.props.searchHandler(e)}
-              />
-            </InputGroup>
+            <Autocomplete
+              id="debug"
+              options={this.state.profiles && this.state.profiles.map((prof)=> prof.name)}
+              style={{width: 300, marginBottom:'10px'}}
+              renderInput={(params) => {
+                 return (
+                <TextField {...params} label="" margin="normal" padding='normal' onFocus={()=> {this.getData()}} onChange={()=>this.setState({result: params.inputProps.value}, ()=> console.log(this.state.result))} onKeyDown={(e)=> this.goToProfile(e)}/>
+              )}}
+            />
           </Form>
+          {this.state.results &&
+            this.state.results.map((res) => (
+              <div className="result-bar">{res.name}</div>
+            ))}
           <div className="ml-auto mr-0 d-flex row justify-content-end">
             <Nav.Link className="navLinkCol" as={Link} to="/home">
               <Col className="navCol">
