@@ -9,6 +9,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import { BiLike } from "react-icons/bi";
+import { FaRegComments } from "react-icons/fa";
 
 import EditPost from "./EditPost";
 import PostModal from "./PostModal";
@@ -29,12 +30,48 @@ export default class Home extends Component {
     loading: true,
     logged: "",
     showComment: false,
+    likes: {
+      like: true,
+    },
   };
 
   toggleComment = () => {
     this.setState((prevState) => ({
       showComment: !prevState.showComment,
     }));
+  };
+
+  toggleLike = async (post) => {
+    this.setState((prevState) => ({
+      likes: !prevState.likes.like,
+    }));
+
+    try {
+      const postData = this.state.likes;
+      postData.profileId = [this.state.me._id];
+      const response = await fetch(
+        process.env.REACT_APP_BE_URL + `post/${post._id}/likes`,
+        {
+          method: "POST",
+          body: JSON.stringify(postData),
+          headers: new Headers({
+            "Content-Type": "application/json",
+          }),
+        }
+      );
+
+      console.log(response);
+      console.log(JSON.stringify(postData));
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        this.setState({ likes: "" }, () => this.fetchPost());
+      } else {
+        throw new Error("Internal Server Error");
+      }
+    } catch (e) {
+      console.log("There was a problem: ", e);
+    }
   };
 
   fetchPost = async () => {
@@ -126,25 +163,36 @@ export default class Home extends Component {
                       )}
 
                       <Card.Footer className="HomeModal bg-white flex-column">
-                        <div className="d-flex">
+                        <div className="d-flex position-relation">
                           <Button variant="mx-1" style={{ color: "dimgrey" }}>
                             <BiLike style={{ width: "25px", height: "25px" }} />{" "}
                             Like
                           </Button>
+
                           <Button
                             variant="mx-1"
                             onClick={this.toggleComment}
                             style={{ color: "dimgrey" }}
                           >
-                            <BiLike style={{ width: "25px", height: "25px" }} />{" "}
+                            <FaRegComments
+                              style={{ width: "25px", height: "25px" }}
+                            />{" "}
                             Comment
                           </Button>
+
+                          {post.likes &&
+                            post.likes.map((like) => (
+                              <div
+                                className="position-absolute"
+                                key={like._id}
+                              ></div>
+                            ))}
                         </div>
                       </Card.Footer>
 
                       {this.state.showComment && (
                         <>
-                          <div className="d-flex justify-content-between align-items-center px-3">
+                          <div className="d-flex justify-content-between align-items-top px-3">
                             <span>
                               <Image
                                 src={post.profiles[0].image}
@@ -162,13 +210,13 @@ export default class Home extends Component {
                           </div>
 
                           {post.comments &&
-                            post.comments.map((comment) => 
-                              (<ReadComment
+                            post.comments.map((comment) => (
+                              <ReadComment
                                 key={comment._id}
                                 profileId={comment.profiles[0]}
                                 text={comment.text}
-                              />)
-                            )}
+                              />
+                            ))}
                         </>
                       )}
                     </Card>

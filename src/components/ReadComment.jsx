@@ -42,7 +42,7 @@ class ReadComment extends React.Component {
 
   render() {
     return (
-      <div className="d-flex justify-content-between align-items-center">
+      <div className="d-flex justify-content-between align-items-top px-3 my-2">
         <span>
           <Image
             src={this.state.me.image}
@@ -51,7 +51,7 @@ class ReadComment extends React.Component {
             roundedCircle
           />
         </span>
-        <div>{this.props.text}</div>
+        <div className="flex-grow-1 bg-light py-2 px-3 ">{this.props.text}</div>
       </div>
     );
   }
