@@ -97,10 +97,8 @@ class EditPage extends React.Component {
         }
       );
       if (response.ok) {
-        console.log(await response.json())
         this.setState({ showModal: false }, () => this.props.refetch());
       } else {
-        console.log(await response.json())
         this.setState({ showModal: false });
       }
     } catch (error) {

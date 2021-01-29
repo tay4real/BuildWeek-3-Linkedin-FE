@@ -15,9 +15,7 @@ import EditPost from "./EditPost";
 import PostModal from "./PostModal";
 import RSidebar from "./RSidebar";
 import Sidebar from "./Sidebar";
-import PostComment from "./PostComment";
-import ReadComment from "./ReadComment";
-
+import Comment from "./Comment";
 import "../styles/Home.css";
 export default class Home extends Component {
   state = {
@@ -81,7 +79,6 @@ export default class Home extends Component {
         let postResponse = await response.json();
         const posts = postResponse.posts;
         console.log(posts);
-
         this.setState({ posts: posts.reverse(), loading: false });
       }
     } catch (error) {
@@ -118,11 +115,19 @@ export default class Home extends Component {
           {this.state.err && (
             <Alert variant="danger">{this.state.errMsg}</Alert>
           )}
-          {this.state.loading && this.state.err !== true ? (
-            <div
-              style={{ position: "relative", top: "8vh", left: "25vw" }}
-              className="lds-facebook"
-            ></div>
+          {this.state.loading ? (
+            <div className="loader-wrap">
+              <div className="lds-roller">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
           ) : Object.keys(this.state.posts).length !== 0 ? (
             <Row>
               <Col className="d-none d-lg-block" lg={3}>
@@ -135,7 +140,8 @@ export default class Home extends Component {
                 />
                 {this.state.posts.map((post) => (
                   <>
-                    <Card className="w-100 my-4 pb-3" key={`feed${post._id}`}>
+                    {" "}
+                    <Card className="w-100 my-4" key={`feed${post._id}`}>
                       <Card.Header className="d-flex justify-content-between px-3">
                         <div>
                           <Image

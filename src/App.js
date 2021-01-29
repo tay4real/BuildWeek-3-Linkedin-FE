@@ -11,11 +11,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function App(props) {
   const [user, setUser] = useState("");
-  const [query, setQuery] = useState("");
-  const searchHandler = (e) => {
-    e.preventDefault();
-    setQuery(e.target.value);
-  };
+
   const getAccount = (data) => {
     setUser(data);
     console.log("App.js has: ", user);
@@ -25,7 +21,7 @@ function App(props) {
     <Router>
       <Route path={["/user/:id", "/home"]}>
         {" "}
-        <AppNavBar query={query} searchHandler={searchHandler} />{" "}
+        <AppNavBar />{" "}
       </Route>
       <Route exact path={"/home"}>
         <Home title="Home page" />{" "}
