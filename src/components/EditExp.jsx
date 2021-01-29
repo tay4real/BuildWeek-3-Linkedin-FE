@@ -62,9 +62,9 @@ class Edit extends React.Component {
       );
       if (response.ok) {
         let experience = await response.json()
-        await this.setState({newExp: experience})
+        await this.setState({newExp: experience}, ()=>console.log("THIS IS THE ID ",this.state.newExp))
         if (this.state.selectedFile !== null) {
-          console.log("Image changing", this.state.expId._id)
+          console.log("Image changing", this.state.newExp)
           this.fileUploadHandler();
         } else {
           this.props.toggle();
@@ -114,7 +114,7 @@ class Edit extends React.Component {
     fd.append("image", this.state.selectedFile);
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BE_URL}experience/upload/${this.state.expId}`,
+        `${process.env.REACT_APP_BE_URL}experience/upload/${this.state.newExp}`,
         {
           method: "POST",
           body: fd,
