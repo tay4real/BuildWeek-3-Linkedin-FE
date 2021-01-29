@@ -37,11 +37,12 @@ class Body extends React.Component {
   componentDidUpdate = async (prevProps) => {
     console.log("UPDATED", prevProps.match.params.id, this.props.match.params.id)
     if (prevProps.match.params.id !== this.props.match.params.id) {
+      this.setState({loading: true}, ()=> console.log(this.state.loading))
       let response = await fetch(
         process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
       );
       let profile = await response.json();
-      this.setState({ profile: profile, loading: false });
+      this.setState({ profile: profile, loading: false }, ()=> console.log(this.state.loading));
     }
     
   };
@@ -61,7 +62,7 @@ class Body extends React.Component {
           {this.state.err && (
             <Alert variant="danger">{this.state.errMsg}</Alert>
           )}
-          {this.state.loading && this.state.err !== true ? (
+          {this.state.loading ? (
             <div className="loader-wrap">
             <div className="lds-roller">
               <div></div>

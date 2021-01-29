@@ -7,6 +7,9 @@ import {
   InputGroup,
   Col,
 } from "react-bootstrap";
+
+import { Autocomplete } from "@material-ui/lab";
+import { TextField } from "@material-ui/core";
 import { withRouter, Link } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { MdWork } from "react-icons/md";
@@ -19,11 +22,33 @@ import "../styles/AppNavBar.css";
 class AppNavBar extends React.Component {
   state = {
     user: "",
+    query: "",
+    results: "",
+    profiles: [],
   };
   componentDidMount = async () => {
     let user = await JSON.parse(localStorage.getItem("logged"));
-    this.setState({ user: user._id }, () => console.log(this.state.user));
+    let response = await fetch(process.env.REACT_APP_BE_URL + `profile`);
+    let profiles = await response.json();
+    this.setState({ user: user._id, profiles: profiles }, () => console.log(this.state));
   };
+
+  // searchHandler = async (e) => {
+  //   e.preventDefault();
+  //   this.setState({ query: e.target.value }, () =>
+  //     console.log(this.state.query)
+  //   );
+  //   let query = this.state.query.toLowerCase();
+
+    
+    
+  //   let result = profiles.filter((prof) => {
+  //     return prof.name.toLowerCase().includes(query); //is prof an array?
+  //   });
+  //   this.setState({ results: result });
+  //   // })
+  // };
+
   render() {
     return (
       <Navbar bg="white" variant="light" className="py-0 fixed-top">
@@ -45,7 +70,7 @@ class AppNavBar extends React.Component {
             </IconContext.Provider>
           </Navbar.Brand>
           <Form inline className="navSearch">
-            <InputGroup>
+            {/* <InputGroup>
               <InputGroup.Prepend>
                 <InputGroup.Text>
                   <IconContext.Provider
@@ -65,10 +90,23 @@ class AppNavBar extends React.Component {
                 type="text"
                 placeholder="Search"
                 className=""
-                onChange={(e) => this.props.searchHandler(e)}
+                onChange={(e) => this.searchHandler(e)}
               />
-            </InputGroup>
+            </InputGroup> */}
+
+            <Autocomplete
+              id="debug"
+              options={this.state.profiles && this.state.profiles.map((prof)=> prof.name)}
+              style={{width: 300, marginBottom:'10px'}}
+              renderInput={(params) => (
+                <TextField {...params} label="" margin="normal" padding='normal'  />
+              )}
+            />
           </Form>
+          {this.state.results &&
+            this.state.results.map((res) => (
+              <div className="result-bar">{res.name}</div>
+            ))}
           <div className="ml-auto mr-0 d-flex row justify-content-end">
             <Nav.Link className="navLinkCol" as={Link} to="/home">
               <Col className="navCol">
