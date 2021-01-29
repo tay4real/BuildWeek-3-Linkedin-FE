@@ -6,7 +6,6 @@ import "../styles/Profile.css";
 class Edit extends React.Component {
   state = {
     showModal: false,
-    expId: '',
     experience: {},
     selectedFile: null,
     imgSubmitStatus: "secondary",
@@ -62,8 +61,10 @@ class Edit extends React.Component {
         }, 
       );
       if (response.ok) {
-        console.log("SENDING: ", this.state.experience, response);
+        let experience = await response.json()
+        await this.setState({newExp: experience}, ()=>console.log("THIS IS THE ID ",this.state.newExp))
         if (this.state.selectedFile !== null) {
+          console.log("Image changing", this.state.newExp)
           this.fileUploadHandler();
         } else {
           this.props.toggle();
@@ -77,6 +78,7 @@ class Edit extends React.Component {
     } catch (e) {
       console.log("There was a problem:", e);
     }
+    //this.setState({selectedFile: '', experience: ''})
   };
   actionBtn = (str) => {
     str !== "DELETE"
@@ -84,8 +86,8 @@ class Edit extends React.Component {
       : this.submitData("DELETE");
   };
   componentDidMount = () => {
-    this.setState({expId: this.props.expId}, ()=> console.log(this.state.expId))
-    this.fetchExp();
+    console.log("received from edit ",this.props.expId)
+    this.setState({expId: this.props.expId}, ()=> console.log("Experience chosen: ", this.state.expId))
   };
   componentDidUpdate = async(prevProps) => {
     if (prevProps.expId !== this.props.expId) {
@@ -112,7 +114,7 @@ class Edit extends React.Component {
     fd.append("image", this.state.selectedFile);
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BE_URL}experience/upload/${this.state.expId}`,
+        `${process.env.REACT_APP_BE_URL}experience/upload/${this.state.newExp}`,
         {
           method: "POST",
           body: fd,

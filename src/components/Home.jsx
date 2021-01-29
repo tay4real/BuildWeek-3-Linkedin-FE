@@ -6,7 +6,7 @@ import {
   Row,
   Col,
   Card,
-  Alert,
+  Alert
 } from "react-bootstrap";
 import { BiLike } from "react-icons/bi";
 import { FaRegComments } from "react-icons/fa";
@@ -15,9 +15,8 @@ import EditPost from "./EditPost";
 import PostModal from "./PostModal";
 import RSidebar from "./RSidebar";
 import Sidebar from "./Sidebar";
-import PostComment from "./PostComment";
-import ReadComment from "./ReadComment";
-
+import Comment from './Comment'
+import ReadComment from './ReadComment'
 import "../styles/Home.css";
 export default class Home extends Component {
   state = {
@@ -81,7 +80,6 @@ export default class Home extends Component {
         let postResponse = await response.json();
         const posts = postResponse.posts;
         console.log(posts);
-
         this.setState({ posts: posts.reverse(), loading: false });
       }
     } catch (error) {
@@ -95,6 +93,8 @@ export default class Home extends Component {
     }
   };
 
+
+  
   fetchMe = async () => {
     try {
       this.setState(
@@ -118,12 +118,21 @@ export default class Home extends Component {
           {this.state.err && (
             <Alert variant="danger">{this.state.errMsg}</Alert>
           )}
-          {this.state.loading && this.state.err !== true ? (
-            <div
-              style={{ position: "relative", top: "8vh", left: "25vw" }}
-              className="lds-facebook"
-            ></div>
-          ) : Object.keys(this.state.posts).length !== 0 ? (
+          {
+            this.state.loading ? (
+              <div className="loader-wrap">
+                <div className="lds-roller">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+            ) : Object.keys(this.state.posts).length !== 0 ? (
             <Row>
               <Col className="d-none d-lg-block" lg={3}>
                 <RSidebar me={this.state.me} />
@@ -134,23 +143,14 @@ export default class Home extends Component {
                   me={this.state.me}
                 />
                 {this.state.posts.map((post) => (
-                  <>
-                    <Card className="w-100 my-4 pb-3" key={`feed${post._id}`}>
-                      <Card.Header className="d-flex justify-content-between px-3">
-                        <div>
-                          <Image
-                            src={post.profiles[0].image}
-                            className="postModalImg mr-3"
-                            style={{ objectFit: "cover" }}
-                            roundedCircle
-                          />
-                          {post.profiles[0].name +
-                            " " +
-                            post.profiles[0].surname}
-                        </div>
-                        <EditPost
-                          post={post}
-                          refetch={() => this.fetchPost()}
+                 <> <Card className="w-100 my-4" key={`feed${post._id}`}>
+                    <Card.Header className="d-flex justify-content-between px-3">
+                      
+                        <Image
+                          src={post.profiles[0].image}
+                          className="postModalImg mr-3"
+                          style={{ objectFit: "cover" }}
+                          roundedCircle
                         />
                       </Card.Header>
                       <Card.Text className="p-3">{post.text}</Card.Text>

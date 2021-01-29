@@ -9,7 +9,6 @@ class EditPost extends React.Component {
     showModal: false,
     content: [],
     post: {},
-    postimage: null,
     imgSubmitStatus: "secondary",
     logged: JSON.parse(localStorage.getItem("logged"))
   };
@@ -69,28 +68,22 @@ class EditPost extends React.Component {
     this.setState({
       postimage: event.target.files[0],
       imgSubmitStatus: "success",
-    });
+    }, ()=> console.log(this.state.postimage))
   };
 
   fileUploadHandler = async () => {
     const fd = new FormData();
-    fd.append("post", this.state.postimage);
+    fd.append("postimage", this.state.postimage);
     try {
       const response = await fetch(
         process.env.REACT_APP_BE_URL + `post/${this.props.post._id}/upload`,
         {
           method: "POST",
           body: fd,
-          headers: new Headers({
-            "Content-Type": "application/json",
-          }),
+          redirect: 'follow'
         }
       );
-      if (response.ok) {
         this.setState({ showModal: false }, () => this.props.refetch());
-      } else {
-        this.setState({ showModal: false });
-      }
     } catch (error) {
       console.log(error);
     }
