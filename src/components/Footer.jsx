@@ -8,12 +8,21 @@ import FooterLogo from "../footer_logo.svg";
 import "../styles/Footer.css";
 class footer extends React.Component {
 
-  getCV = async() => {
-    let data = await fetch(process.env.REACT_APP_BE_URL + `profile/${this.props.match.params.id}`)
-    let profile = await data.json()
+ /* getCV = async() => {
     let username = profile.username
-    let expdata = await fetch(process.env.REACT_APP_BE_URL + `experience/${username}/experiences/CSV`)
-    
+    this.setState({username: username})
+  }*/
+
+  state = {
+    username: ""
+  }
+
+  componentDidMount = async () => {
+    let data = await fetch(process.env.REACT_APP_BE_URL + `profile/${this.props.match.params.id}`)
+    let username = ( await data.json()).username
+
+    console.log(username)
+    this.setState({username: username})
   }
 
   render() {
@@ -58,7 +67,15 @@ class footer extends React.Component {
                     Marketing Solutions <br />
                     Advertising <br />
                     Small Business <br />
-                    <span onClick={()=>this.getCV()}>Get your CV</span>
+                  { this.state.username &&
+                  <>
+                  <a href={process.env.REACT_APP_BE_URL + `experience/${this.state.username}/experiences/CSV`} > Get your CSV</a> <br/>
+                  <a href={process.env.REACT_APP_BE_URL + `profile/${this.props.match.params.id}/CV`} target="_blank"> Get your PDF</a>
+                  </>
+                  }
+                  
+                    
+
                   </p>
                 </Col>
               </Row>
