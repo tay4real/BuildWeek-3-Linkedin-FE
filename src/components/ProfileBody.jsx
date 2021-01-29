@@ -35,7 +35,8 @@ class Body extends React.Component {
   };
 
   componentDidUpdate = async (prevProps) => {
-    if (prevProps.match.params.id !== this.props.match.params.id) {
+    console.log("UPDATED", prevProps.match.params.id, this.props.match.params.id )
+    if (prevProps.match.params._id !== this.props.match.params._id) {
       let response = await fetch(
         process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
       );
@@ -45,11 +46,12 @@ class Body extends React.Component {
     
   };
   searchProfile = async(id) => {
+    console.log("Refetching...")
     let response = await fetch(
       process.env.REACT_APP_BE_URL + "profile/" + id
     );
     let profile = await response.json();
-    this.setState({ profile: profile, loading: false });
+    this.setState({ profile: profile, loading: false }, ()=> console.log(this.state.profile));
   }
 
   render() {
