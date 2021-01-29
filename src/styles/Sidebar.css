@@ -91,6 +91,7 @@ small {
 .lrn-div {
   padding: 15px;
   width: 320px;
+  height: 330px;
   border-style: solid;
   border-width: 0.1vw;
   border-color: lightgray;
@@ -113,8 +114,23 @@ small {
   font-weight: 400;
   color: rgba(0, 0, 0, 0.9);
 }
+.courses{
+  height: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.course {
+  display: flex;
+  flex-direction:row ;
+  justify-content: space-around;
+}
+
 .vid-img {
   height: 60px;
+  width: 100px;
+  object-fit: cover;
   cursor: pointer;
 }
 .vid-txt {

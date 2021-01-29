@@ -74,31 +74,28 @@ class Sidebar extends Component {
           </svg>
           <h6 className="lrn-h6">LEARNING</h6>
           <h5 className="lrn-h5">Add new skills with these courses</h5>
-          <div className="row no-gutters">
-            <div className="col-md-4">
+          <div className="courses">
+            <div className="course">
               <img className="vid-img" src={vid1}></img>
-            </div>
-            <div className="col-md-8">
-              <h4 className="vid-txt">
-                Building Angular and ASP.NET Core Applications
+            
+              <h4 className="vid-txt ">
+              Planning a Career in User Experience
               </h4>
               <small className="vid-sml">3,895</small>
             </div>
-            <div className="col-md-4">
+            <div className="course">
               <img className="vid-img" src={vid2}></img>
-            </div>
-            <div className="col-md-8">
+            
               <h4 className="vid-txt">
-                Building Angular and ASP.NET Core Applications
+              Learning MongoDB
               </h4>
               <small className="vid-sml">4,985</small>
             </div>
-            <div className="col-md-4">
+            <div className="course">
               <img className="vid-img" src={vid3}></img>
-            </div>
-            <div className="col-md-8">
+            
               <h4 className="vid-txt">
-                Building Angular and ASP.NET Core Applications
+              Graphic Design Foundations: Typography
               </h4>
               <small className="vid-sml">12,464</small>
             </div>
