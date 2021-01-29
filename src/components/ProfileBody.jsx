@@ -35,8 +35,8 @@ class Body extends React.Component {
   };
 
   componentDidUpdate = async (prevProps) => {
-    console.log("UPDATED", prevProps.match.params.id, this.props.match.params.id )
-    if (prevProps.match.params._id !== this.props.match.params._id) {
+    console.log("UPDATED", prevProps.match.params.id, this.props.match.params.id)
+    if (prevProps.match.params.id !== this.props.match.params.id) {
       let response = await fetch(
         process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
       );
@@ -162,7 +162,9 @@ class Body extends React.Component {
                               <EditPage
                                 profile={this.state.profile}
                                 logged = {this.state.logged._id}
-                                refetch={()=>this.searchProfile(this.state.profile._id)}
+                                refetch={() =>
+                                  this.searchProfile(this.state.profile._id)
+                                }
                                 color="#0A66CE"
                               />
                             </Route>
