@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Row, Col, Form, Button, Container } from "react-bootstrap";
 import { Link, withRouter } from "react-router-dom";
 import FooterLogo from "../footer_logo.svg";
@@ -24,26 +24,23 @@ class SignUp extends React.Component {
         console.log("There is a problem with your application.");
       } else if (newUser.statusText === "Created") {
         let user = await newUser.json();
-        localStorage.setItem(
-          "logged",
-          await JSON.stringify(user)
-        );
+        localStorage.setItem("logged", await JSON.stringify(user));
         this.props.history.push(`/user/${user._id}`);
       }
-    
-    console.log(newUser)
-    if (newUser.statusText === "Internal Server Error") {
-      console.log("There is a problem with your application.")
-    } else if (newUser.statusText === "Created") {
-      let user = await newUser.json()
-      // localStorage.setItem(
-      //   "logged",
-      //   await JSON.stringify(user)
-      // );
-      this.props.history.push(`/`)
-    }
-    } catch(error) {
-      console.log(error)
+
+      console.log(newUser);
+      if (newUser.statusText === "Internal Server Error") {
+        console.log("There is a problem with your application.");
+      } else if (newUser.statusText === "Created") {
+        let user = await newUser.json();
+        // localStorage.setItem(
+        //   "logged",
+        //   await JSON.stringify(user)
+        // );
+        this.props.history.push(`/`);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   onChangeUserName = (e) => {
@@ -188,11 +185,9 @@ class SignUp extends React.Component {
                 <a>Cookie Policy</a>.
               </span>
               <Col className="signupCol px-0">
-                
                 <Button className="signupBtn" onClick={() => this.addUser()}>
                   Agree & Join
                 </Button>
-               
               </Col>
             </div>
             <Row className="d-flex justify-content-around mt-4 mx-auto ">
@@ -208,4 +203,4 @@ class SignUp extends React.Component {
     );
   }
 }
-export default withRouter(SignUp)
+export default withRouter(SignUp);
