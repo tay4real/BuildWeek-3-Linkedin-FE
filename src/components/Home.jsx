@@ -6,7 +6,7 @@ import {
   Row,
   Col,
   Card,
-  Alert
+  Alert,
 } from "react-bootstrap";
 import { BiLike } from "react-icons/bi";
 
@@ -14,7 +14,9 @@ import EditPost from "./EditPost";
 import PostModal from "./PostModal";
 import RSidebar from "./RSidebar";
 import Sidebar from "./Sidebar";
-import Comment from './Comment'
+import PostComment from "./PostComment";
+import ReadComment from "./ReadComment";
+
 import "../styles/Home.css";
 export default class Home extends Component {
   state = {
@@ -26,6 +28,13 @@ export default class Home extends Component {
     errMsg: "",
     loading: true,
     logged: "",
+    showComment: false,
+  };
+
+  toggleComment = () => {
+    this.setState((prevState) => ({
+      showComment: !prevState.showComment,
+    }));
   };
 
   fetchPost = async () => {
@@ -98,36 +107,82 @@ export default class Home extends Component {
                   me={this.state.me}
                 />
                 {this.state.posts.map((post) => (
-                 <> <Card className="w-100 my-4" key={`feed${post._id}`}>
-                    <Card.Header className="d-flex justify-content-between px-3">
-                      <div>
-                        <Image
-                          src={post.profiles[0].image}
-                          className="postModalImg mr-3"
-                          style={{ objectFit: "cover" }}
-                          roundedCircle
+                  <>
+                    <Card className="w-100 my-4 pb-3" key={`feed${post._id}`}>
+                      <Card.Header className="d-flex justify-content-between px-3">
+                        <div>
+                          <Image
+                            src={post.profiles[0].image}
+                            className="postModalImg mr-3"
+                            style={{ objectFit: "cover" }}
+                            roundedCircle
+                          />
+                          {post.profiles[0].name +
+                            " " +
+                            post.profiles[0].surname}
+                        </div>
+                        <EditPost
+                          post={post}
+                          refetch={() => this.fetchPost()}
                         />
-                        {post.profiles[0].name + " " + post.profiles[0].surname}
-                      </div>
-                      <EditPost post={post} refetch={() => this.fetchPost()} />
-                    </Card.Header>
-                    <Card.Text className="p-3">{post.text}</Card.Text>
-                    {post.postimageUrl && (
-                      <Card.Img
-                        src={post.postimageUrl}
-                        alt="PostImage"
-                        className="postImage"
-                      />
-                    )}
-                    
-                    <Card.Footer className="HomeModal bg-white">
-                      <Button variant="mx-1" style={{color: 'dimgrey'}}>
-                        <BiLike style={{width: '25px', height: '25px'}} /> Like
-                      </Button>
-                    </Card.Footer>
-                    
-                  </Card>
-                  <Comment/></>
+                      </Card.Header>
+                      <Card.Text className="p-3">{post.text}</Card.Text>
+                      {post.postimageUrl && (
+                        <Card.Img
+                          src={post.postimageUrl}
+                          alt="PostImage"
+                          className="postImage"
+                        />
+                      )}
+
+                      <Card.Footer className="HomeModal bg-white flex-column">
+                        <div className="d-flex">
+                          <Button variant="mx-1" style={{ color: "dimgrey" }}>
+                            <BiLike style={{ width: "25px", height: "25px" }} />{" "}
+                            Like
+                          </Button>
+                          <Button
+                            variant="mx-1"
+                            onClick={this.toggleComment}
+                            style={{ color: "dimgrey" }}
+                          >
+                            <BiLike style={{ width: "25px", height: "25px" }} />{" "}
+                            Comment
+                          </Button>
+                        </div>
+                      </Card.Footer>
+
+                      {this.state.showComment && (
+                        <>
+                          <div className="d-flex justify-content-between align-items-center px-3">
+                            <span>
+                              <Image
+                                src={post.profiles[0].image}
+                                className="postModalImg mr-3"
+                                style={{ objectFit: "cover" }}
+                                roundedCircle
+                              />
+                            </span>
+                            <PostComment
+                              className="flex-grow-1"
+                              post={post}
+                              me={this.state.me}
+                              refetch={() => this.fetchPost()}
+                            />
+                          </div>
+
+                          {post.comments &&
+                            post.comments.map((comment) => 
+                              (<ReadComment
+                                key={comment._id}
+                                profileId={comment.profiles[0]}
+                                text={comment.text}
+                              />)
+                            )}
+                        </>
+                      )}
+                    </Card>
+                  </>
                 ))}
               </Col>
               <Col className="d-none d-md-block" md={3}>
