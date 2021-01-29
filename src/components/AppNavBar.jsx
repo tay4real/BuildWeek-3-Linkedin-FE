@@ -33,21 +33,26 @@ class AppNavBar extends React.Component {
     this.setState({ user: user._id, profiles: profiles }, () => console.log(this.state));
   };
 
-  // searchHandler = async (e) => {
-  //   e.preventDefault();
-  //   this.setState({ query: e.target.value }, () =>
-  //     console.log(this.state.query)
-  //   );
-  //   let query = this.state.query.toLowerCase();
+  goToProfile = async(e) => { 
+   e.target.value += ''
+    if(e.keyCode === 13) {
+      e.preventDefault();
+    let query = e.target.value;
+    let result = this.state.profiles.filter((prof) => {
+     return prof.name.toLowerCase() === query.toLowerCase(); //is prof an array?
+    });
+    await this.setState({ results: result }, ()=> console.log(this.state.results));
+    console.log(this.state.results[0]._id)
+    this.props.history.push(`/user/${this.state.results[0]._id}`)
+    }
+    
+  };
 
-    
-    
-  //   let result = profiles.filter((prof) => {
-  //     return prof.name.toLowerCase().includes(query); //is prof an array?
-  //   });
-  //   this.setState({ results: result });
-  //   // })
-  // };
+  getData = async() => {
+    let response = await fetch(process.env.REACT_APP_BE_URL + `profile`);
+    let profiles = await response.json();
+    this.setState({ profiles: profiles }, () => console.log(this.state.profiles));
+  }
 
   render() {
     return (
@@ -70,37 +75,14 @@ class AppNavBar extends React.Component {
             </IconContext.Provider>
           </Navbar.Brand>
           <Form inline className="navSearch">
-            {/* <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text>
-                  <IconContext.Provider
-                    value={{
-                      size: "15",
-                      className: "SearchIcon",
-                      color: "grey",
-                      backgroundColor: "#60627c",
-                    }}
-                  >
-                    <FaSearch />
-                  </IconContext.Provider>
-                </InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                value={this.props.query}
-                type="text"
-                placeholder="Search"
-                className=""
-                onChange={(e) => this.searchHandler(e)}
-              />
-            </InputGroup> */}
-
             <Autocomplete
               id="debug"
               options={this.state.profiles && this.state.profiles.map((prof)=> prof.name)}
               style={{width: 300, marginBottom:'10px'}}
-              renderInput={(params) => (
-                <TextField {...params} label="" margin="normal" padding='normal'  />
-              )}
+              renderInput={(params) => {
+                 return (
+                <TextField {...params} label="" margin="normal" padding='normal' onFocus={()=> {this.getData()}} onChange={()=>this.setState({result: params.inputProps.value}, ()=> console.log(this.state.result))} onKeyDown={(e)=> this.goToProfile(e)}/>
+              )}}
             />
           </Form>
           {this.state.results &&
