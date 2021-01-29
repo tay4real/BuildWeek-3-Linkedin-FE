@@ -162,9 +162,7 @@ class Body extends React.Component {
                               <EditPage
                                 profile={this.state.profile}
                                 logged = {this.state.logged._id}
-                                refetch={() =>
-                                  this.searchProfile(this.state.profile._id)
-                                }
+                                refetch={()=>this.searchProfile(this.state.profile._id)}
                                 color="#0A66CE"
                               />
                             </Route>

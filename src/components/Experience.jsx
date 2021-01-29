@@ -187,7 +187,7 @@ class Experience extends React.Component {
                 <Droppable droppableId="droppable">
                   {(provided, snapshot) => (
                     <div {...provided.droppableProps} ref={provided.innerRef}>
-                      {this.state.experience.length > 1 ? (
+                      {this.state.experience.length > 0 ? (
                         this.state.experience.map((exp, index) => (
                           <Draggable
                             key={exp._id}
