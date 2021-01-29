@@ -85,7 +85,7 @@ class PostModal extends React.Component {
         const data = await response.json();
 
         console.log(data);
-        this.setState({ post: "" });
+        this.setState({post: ''})
         if (this.state.selectedFile !== null) {
           this.fileUploadHandler(data); // upload the file
         }
@@ -105,21 +105,10 @@ class PostModal extends React.Component {
         <Card className="bg-white p-4">
           <Button
             className="postButton"
-            variant="none"
+            variant='none'
             onClick={() => this.setState({ showModal: true })}
           >
-            <div className="btn-content">
-              {" "}
-              <HiPencilAlt
-                style={{
-                  width: "28px",
-                  height: "28px",
-                  color: "dimgray",
-                  marginRight: "7px",
-                }}
-              />{" "}
-              Start a Discussion{" "}
-            </div>
+            <div className='btn-content'> <HiPencilAlt style={{width: '28px', height: '28px', color: 'dimgray', marginRight: '7px'}} /> Start a Discussion </div>
           </Button>
         </Card>
         <Modal
@@ -137,7 +126,7 @@ class PostModal extends React.Component {
                   src={this.props.me.image}
                   roundedCircle
                   className="postModalImg"
-                  style={{ objectFit: "cover" }}
+                  style={{objectFit: 'cover'}}
                 />
                 <strong className="ml-5">
                   {this.props.me.name + " " + this.props.me.surname}
