@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import vid1 from "../assets/vid1.png";
 import vid2 from "../assets/vid2.png";
 import vid3 from "../assets/vid3.png";
-import Placeholder from '../assets/linkedin-logo.png'
+import Placeholder from "../assets/linkedin-logo.png";
 
 class Sidebar extends Component {
   state = {
@@ -13,12 +13,14 @@ class Sidebar extends Component {
     selected: "me",
   };
   componentDidMount = () => {
-    fetch(process.env.REACT_APP_BE_URL +  "profile")
+    fetch(process.env.REACT_APP_BE_URL + "profile")
       .then((response) => response.json())
       .then((info) => {
-        let logged = JSON.parse(localStorage.getItem('logged'));
-        let filtered_users = info.filter((user)=> user._id !== logged._id)
-        this.setState({ users: filtered_users }, ()=> console.log("Sidebar: ", this.state.users));
+        let logged = JSON.parse(localStorage.getItem("logged"));
+        let filtered_users = info.filter((user) => user._id !== logged._id);
+        this.setState({ users: filtered_users }, () =>
+          console.log("Sidebar: ", this.state.users)
+        );
       });
   };
   render() {
@@ -39,7 +41,11 @@ class Sidebar extends Component {
               <div className="userdiv2" key={`suggestUsers${index}`}>
                 <Link to={`/user/${user._id}`}>
                   <Row>
-                    <img className="userimg" src={user.image ? user.image : Placeholder} alt="user"></img>
+                    <img
+                      className="userimg"
+                      src={user.image ? user.image : Placeholder}
+                      alt="user"
+                    ></img>
                     <div>
                       <h6 className="sugUsers" id={`suggestUsers${index}name`}>
                         {user.name}
@@ -75,31 +81,38 @@ class Sidebar extends Component {
           <h6 className="lrn-h6">LEARNING</h6>
           <h5 className="lrn-h5">Add new skills with these courses</h5>
           <div className="courses">
-            <div className="course">
-              <img className="vid-img" src={vid1}></img>
-            
-              <h4 className="vid-txt ">
-              Planning a Career in User Experience
-              </h4>
-              <small className="vid-sml">3,895</small>
+            <a target='blank' href="www.linkedin.com/learning/planning-a-career-in-user-experience/">
+              {" "}
+              <div className="course">
+                <img className="vid-img" src={vid1}></img>
+
+                <h4 className="vid-txt ">
+                  Planning a Career in User Experience
+                </h4>
+                <small className="vid-sml">3,895</small>
+              </div>
+            </a>
+            <a target='blank' href="www.linkedin.com/learning/learning-mongodb">
+              {" "}
+              <div className="course">
+                <img className="vid-img" src={vid2}></img>
+
+                <h4 className="vid-txt">Learning MongoDB</h4>
+                <small className="vid-sml">4,985</small>
+              </div>
+            </a>
+            <a target='blank' href='https://www.linkedin.com/learning/graphic-design-foundations-typography/welcome'>
+              <div className="course">
+                <img className="vid-img" src={vid3}></img>
+
+                <h4 className="vid-txt">
+                  Graphic Design Foundations: Typography
+                </h4>
+                <small className="vid-sml">12,464</small>
+              </div>
+              </a>
             </div>
-            <div className="course">
-              <img className="vid-img" src={vid2}></img>
-            
-              <h4 className="vid-txt">
-              Learning MongoDB
-              </h4>
-              <small className="vid-sml">4,985</small>
-            </div>
-            <div className="course">
-              <img className="vid-img" src={vid3}></img>
-            
-              <h4 className="vid-txt">
-              Graphic Design Foundations: Typography
-              </h4>
-              <small className="vid-sml">12,464</small>
-            </div>
-          </div>
+         
         </div>
         <div className="ad-div">
           <img

@@ -10,9 +10,8 @@
   width: 1200px;
 }
 .postImage {
-  height: 300px;
+  
   object-fit: cover;
-  color: dar
 }
 .HomeModal {
   display: flex;
