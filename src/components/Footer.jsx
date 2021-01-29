@@ -1,12 +1,21 @@
 import React from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import {Link} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 import { IconContext } from "react-icons";
 import { FaQuestionCircle } from "react-icons/fa";
 import { BsFillGearFill } from "react-icons/bs";
 import FooterLogo from "../footer_logo.svg";
 import "../styles/Footer.css";
 class footer extends React.Component {
+
+  getCV = async() => {
+    let data = await fetch(process.env.REACT_APP_BE_URL + `profile/${this.props.match.params.id}`)
+    let profile = await data.json()
+    let username = profile.username
+    let expdata = await fetch(process.env.REACT_APP_BE_URL + `experience/${username}/experiences/CSV`)
+    
+  }
+
   render() {
     return (
       <Container id="footer" fluid>
@@ -49,6 +58,7 @@ class footer extends React.Component {
                     Marketing Solutions <br />
                     Advertising <br />
                     Small Business <br />
+                    <span onClick={()=>this.getCV()}>Get your CV</span>
                   </p>
                 </Col>
               </Row>
@@ -82,6 +92,7 @@ class footer extends React.Component {
                     <div className="ml-2">
                       <h6>Manage your account and privacy</h6>
                       <span>Go to your Settings.</span>
+                      
                     </div>
                     
                   </Row>
@@ -110,4 +121,4 @@ class footer extends React.Component {
     );
   }
 }
-export default footer;
+export default withRouter(footer);
