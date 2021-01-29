@@ -10,10 +10,12 @@ class PostModal extends React.Component {
   state = {
     showModal: false,
     me: {},
-    selectedFile: null,
+    postimage: null,
     imgSubmitStatus: "secondary",
     post: {
       text: "",
+      username: "",
+      profiles: "",
     },
   };
 
@@ -29,27 +31,33 @@ class PostModal extends React.Component {
       },
     });
   };
+
   fileSelectHandler = (event) => {
-    this.setState({
-      selectedFile: event.target.files[0],
-      imgSubmitStatus: "success",
-    });
+    this.setState(
+      {
+        selectedFile: event.target.files[0],
+        imgSubmitStatus: "success",
+      },
+      () => console.log(this.state.selectedFile)
+    );
   };
+
   fileUploadHandler = async (postId) => {
     const fd = new FormData();
-    fd.append("post", this.state.selectedFile);
+    fd.append("postimage", this.state.selectedFile);
+    // console.log(fd);
     try {
       const response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/posts/${postId}`,
+        process.env.REACT_APP_BE_URL + `post/${postId}/upload`,
         {
           method: "POST",
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
           body: fd,
         }
       );
+
       if (response.ok) {
+        console.log(await response.json());
         this.setState({ showModal: false }, () => this.props.refetch());
-        console.log("posted with a image");
       } else {
         this.setState({ showModal: false });
       }
@@ -57,31 +65,39 @@ class PostModal extends React.Component {
       console.log(error);
     }
   };
+
   post = async () => {
     try {
-      const response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/posts",
-        {
-          method: "POST",
-          body: JSON.stringify(this.state.post),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      const postData = this.state.post;
+      postData.username = this.props.me.username;
+      postData.profiles = this.props.me._id;
+      const response = await fetch(process.env.REACT_APP_BE_URL + `post`, {
+        method: "POST",
+        body: JSON.stringify(postData),
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+      });
+      console.log(this.props.me.username);
+      console.log(response);
+      console.log(JSON.stringify(postData));
       if (response.ok) {
         const data = await response.json();
+
         console.log(data);
-        this.fileUploadHandler(data._id);
-        // this.setState({ showModal: false }, () => this.props.refetch());
+        if (this.state.selectedFile !== null) {
+          this.fileUploadHandler(data); // upload the file
+        }
+
+        this.setState({ showModal: false }, () => this.props.refetch());
       } else {
-        this.setState({ showModal: false });
+        throw new Error("Internal Server Error");
       }
     } catch (e) {
-      console.log(e);
+      console.log("There was a problem: ", e);
     }
   };
+
   render() {
     return (
       <>
@@ -91,7 +107,7 @@ class PostModal extends React.Component {
             variant="outline-dark"
             onClick={() => this.setState({ showModal: true })}
           >
-            <BiPencil /> Start a Post
+            <BiPencil /> Start a Discussion
           </Button>
         </Card>
         <Modal
@@ -109,6 +125,7 @@ class PostModal extends React.Component {
                   src={this.props.me.image}
                   roundedCircle
                   className="postModalImg"
+                  style={{objectFit: 'cover'}}
                 />
                 <strong className="ml-5">
                   {this.props.me.name + " " + this.props.me.surname}
@@ -158,7 +175,7 @@ class PostModal extends React.Component {
                 className: "mx-2",
                 color:
                   this.state.imgSubmitStatus === "secondary"
-                    ? "#666"
+                    ? "#777"
                     : "#28a745",
               }}
             >
@@ -168,14 +185,14 @@ class PostModal extends React.Component {
               value={{
                 size: "30px",
                 className: "mx-2",
-                color: "#666",
+                color: "#777",
               }}
             >
               <FaVideo />
               <FaStickyNote />
               <FaPenSquare />
             </IconContext.Provider>
-            <Button rounded-pill variant="primary" onClick={() => this.post()}>
+            <Button rounded-pill variant="primary" onClick={this.post}>
               Post
             </Button>
           </Modal.Footer>

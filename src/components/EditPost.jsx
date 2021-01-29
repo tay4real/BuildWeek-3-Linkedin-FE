@@ -9,8 +9,9 @@ class EditPost extends React.Component {
     showModal: false,
     content: [],
     post: {},
-    selectedFile: null,
+    postimage: null,
     imgSubmitStatus: "secondary",
+    logged: JSON.parse(localStorage.getItem("logged"))
   };
 
   onChangeHandler = (e) => {
@@ -25,18 +26,17 @@ class EditPost extends React.Component {
   Edit = async () => {
     try {
       const response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/posts/${this.props.post._id}`,
+        process.env.REACT_APP_BE_URL + `post/${this.props.post._id}`,
         {
           method: "PUT",
           body: JSON.stringify(this.state.content),
-          headers: {
+          headers: new Headers({
             "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
+          }),
         }
       );
       if (response.ok) {
-        this.state.selectedFile !== null
+        this.state.postimage !== null
           ? this.fileUploadHandler()
           : this.setState({ showModal: false }, () => this.props.refetch());
       } else {
@@ -50,13 +50,9 @@ class EditPost extends React.Component {
   Delete = async () => {
     try {
       const response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/posts/${this.props.post._id}`,
+        process.env.REACT_APP_BE_URL + `post/${this.props.post._id}`,
         {
           method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
         }
       );
       if (response.ok) {
@@ -71,21 +67,23 @@ class EditPost extends React.Component {
   };
   fileSelectHandler = (event) => {
     this.setState({
-      selectedFile: event.target.files[0],
+      postimage: event.target.files[0],
       imgSubmitStatus: "success",
     });
   };
 
   fileUploadHandler = async () => {
     const fd = new FormData();
-    fd.append("post", this.state.selectedFile);
+    fd.append("post", this.state.postimage);
     try {
       const response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/posts/${this.props.post._id}`,
+        process.env.REACT_APP_BE_URL + `post/${this.props.post._id}/upload`,
         {
           method: "POST",
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
           body: fd,
+          headers: new Headers({
+            "Content-Type": "application/json",
+          }),
         }
       );
       if (response.ok) {
@@ -103,7 +101,7 @@ class EditPost extends React.Component {
   render() {
     return (
       <>
-        <div
+        {this.state.content.username === this.state.logged.username && <div
           onClick={() => this.setState({ showModal: true })}
           className="JumbBiPencilDiv"
         >
@@ -116,6 +114,7 @@ class EditPost extends React.Component {
             <BiDotsHorizontalRounded />
           </IconContext.Provider>
         </div>
+        }
         <Modal
           show={this.state.showModal}
           onHide={() => this.setState({ showModal: false })}
@@ -128,14 +127,14 @@ class EditPost extends React.Component {
             <Row>
               <Col>
                 <Image
-                  src={this.props.post.user.image}
+                  src={this.props.post.profiles[0].image}
                   roundedCircle
                   className="postModalImg"
                 />
                 <strong className="ml-5">
-                  {this.props.post.user.name +
+                  {this.props.post.profiles[0].name +
                     " " +
-                    this.props.post.user.surname}
+                    this.props.post.profiles[0].surname}
                 </strong>
               </Col>
             </Row>

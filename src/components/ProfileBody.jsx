@@ -9,7 +9,6 @@ import {
 } from "react-bootstrap";
 import Bio from "./BioCard";
 import Experience from "./Experience";
-import Feature from "./Featured";
 import Sidebar from "./Sidebar";
 import EditPage from "./EditPage";
 import "../styles/Profile.css";
@@ -33,6 +32,7 @@ class Body extends React.Component {
     let profile = await response.json();
     this.setState({ profile: profile, loading: false });
   };
+
   componentDidUpdate = async (prevProps) => {
     if (prevProps.match.params.id !== this.props.match.params.id) {
       let response = await fetch(
@@ -43,6 +43,13 @@ class Body extends React.Component {
     }
     
   };
+  searchProfile = async(id) => {
+    let response = await fetch(
+      process.env.REACT_APP_BE_URL + "profile/" + this.props.match.params.id
+    );
+    let profile = await response.json();
+    this.setState({ profile: profile, loading: false });
+  }
 
   render() {
     return (
@@ -52,7 +59,8 @@ class Body extends React.Component {
             <Alert variant="danger">{this.state.errMsg}</Alert>
           )}
           {this.state.loading && this.state.err !== true ? (
-            <div class="lds-roller">
+            <div className="loader-wrap">
+            <div className="lds-roller">
               <div></div>
               <div></div>
               <div></div>
@@ -62,6 +70,7 @@ class Body extends React.Component {
               <div></div>
               <div></div>
             </div>
+          </div>
           ) : Object.keys(this.state.profile).length !== 0 ? (
             <Row className="rowm">
               {/*<Col lg={3}></Col> */}
@@ -151,7 +160,7 @@ class Body extends React.Component {
                                 profile={this.state.profile}
                                 logged = {this.state.logged._id}
                                 refetch={() =>
-                                  this.searchProfile(this.props.match.params.id)
+                                  this.searchProfile(this.state.profile._id)
                                 }
                                 color="#0A66CE"
                               />
@@ -165,12 +174,9 @@ class Body extends React.Component {
                 <Bio
                   bio={this.state.profile.bio}
                   profile={this.state.profile}
-                  refetch={() => this.searchProfile(this.props.match.params.id)}
+                  refetch={() => this.searchProfile(this.state.profile._id)}
                 />
-                <Route path={"/user/"+this.state.logged._id}>
-                  {" "}
-                  <Feature />{" "}
-                </Route>
+                
                 <Experience profile={this.state.profile} logged={this.state.logged._id} />
               </Col>
               <Col

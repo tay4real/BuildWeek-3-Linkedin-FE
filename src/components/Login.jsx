@@ -8,43 +8,47 @@ class Login extends Component {
     user: [],
     hidden: true,
   };
-  componentDidMount = async() => {
+  componentDidMount = async () => {
     let response = await fetch(process.env.REACT_APP_BE_URL + "profile");
-      let profiles = await response.json()
-      this.setState({profiles: profiles}, ()=> console.log(profiles))
-  }
-  sendData = async() => {
-    await this.props.account(this.state.loggedWith._id); 
-    
-}
+    let profiles = await response.json();
+    this.setState({ profiles: profiles }, () => console.log(profiles));
+  };
+
+  sendData = async () => {
+    await this.props.account(this.state.loggedWith._id);
+  };
+
   submitData = async (e) => {
     e.preventDefault();
-    console.log(this.state.user)
+    console.log(this.state.user);
     try {
-      await this.state.profiles.map((user)=> {
-        if(this.state.user.username === user.email) {
-          console.log("It's a match! ", user)
-          this.setState({loggedWith: user})
-          
+      await this.state.profiles.map((user) => {
+        if (this.state.user.username === user.email) {
+          console.log("It's a match! ", user);
+          this.setState({ loggedWith: user });
         } else {
-          console.log("No matches found")
+          console.log("No matches found");
         }
-      })
-      this.sendData()
-      localStorage.setItem('logged', await JSON.stringify(this.state.loggedWith))
-      let user = await JSON.parse(localStorage.getItem('logged'));
-      console.log("Logged in with: ", user)       
-    this.props.history.push(`/user/${this.state.loggedWith._id}`)
+      });
+      this.sendData();
+      localStorage.setItem(
+        "logged",
+        await JSON.stringify(this.state.loggedWith)
+      );
+      let user = await JSON.parse(localStorage.getItem("logged"));
+      console.log("Logged in with: ", user);
+      this.props.history.push(`/user/${this.state.loggedWith._id}`);
     } catch (error) {
       console.log(error);
     }
-    
   };
+
   onChangeHandler = (e) => {
     this.setState({
       user: { ...this.state.user, [e.target.id]: e.currentTarget.value },
     });
   };
+
   handleLogin = (e) => {
     if (e.keyCode === 13) {
       this.props.submitData(this.state.user);
@@ -54,10 +58,14 @@ class Login extends Component {
       });
     }
   };
+
+
   toggleShow = (e) => {
     e.preventDefault();
     this.setState({ hidden: !this.state.hidden });
   };
+
+  
   render() {
     return (
       <div className="loginDiv">
@@ -86,7 +94,7 @@ class Login extends Component {
                   <span>Stay updated on your professional world</span>
                 )}
               </div>
-              <Form onSubmit={(e)=> this.submitData(e)}>
+              <Form onSubmit={(e) => this.submitData(e)}>
                 <Form.Group>
                   <Form.Control
                     required
