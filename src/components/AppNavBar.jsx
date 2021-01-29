@@ -85,10 +85,7 @@ class AppNavBar extends React.Component {
               )}}
             />
           </Form>
-          {this.state.results &&
-            this.state.results.map((res) => (
-              <div className="result-bar">{res.name}</div>
-            ))}
+          
           <div className="ml-auto mr-0 d-flex row justify-content-end">
             <Nav.Link className="navLinkCol" as={Link} to="/home">
               <Col className="navCol">
