@@ -6,13 +6,28 @@
   block-size: max-content;
 }
 .postButton {
+  background-color: none;
   border-radius: 30px !important;
+  border-color: dimgray;
+  width: 100%;
+  padding: .8rem !important;
+  padding-left: 1rem;
+}
+
+.postButton:hover {
+  background-color: lightgray;
+  transition: .5s;
+}
+
+.btn-content {
+  color: dimgray;
+  font-size: 15px;
   display: flex;
   flex-direction: row;
-  width: 100%;
-  padding: 1rem !important;
-  font-size: 14px !important;
+  justify-content: flex-start;
+  align-items: center;
 }
+
 .postImage {
   background-color: white;
 }

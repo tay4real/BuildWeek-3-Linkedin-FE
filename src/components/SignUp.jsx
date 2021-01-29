@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Row, Col, Form, Button, Container } from "react-bootstrap";
 import { Link, withRouter } from "react-router-dom";
 import FooterLogo from "../footer_logo.svg";
@@ -180,7 +180,6 @@ class SignUp extends React.Component {
                 <a>Cookie Policy</a>.
               </span>
               <Col className="signupCol px-0">
-                {/* <Button className="signupBtn" > */}
                 <Button className="signupBtn" onClick={() => this.addUser()}>
                   Agree & Join
                 </Button>
